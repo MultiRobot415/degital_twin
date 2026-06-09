@@ -59,10 +59,13 @@ def main() -> int:
         # パスワードはログに出さない（伏せる）
         print(f"→ station モードに設定 (ap {ssid} ****) ...")
         resp = send(sock, f"ap {ssid} {password}")
-        if resp.lower() != "ok":
+        # 成功応答は "ok" だけでなく "OK,drone will reboot in 3s" のように返る機体もある。
+        # 失敗は "error"/"false" 等なので、ok を含むかどうかで判定する。
+        rl = resp.lower()
+        if not (rl.startswith("ok") or "reboot" in rl):
             print(f"  失敗: '{resp}'。SSID/パスワードを確認")
             return 1
-        print("  ok")
+        print(f"  応答: '{resp}'")
 
         print("\n✅ 成功。Tello が再起動して研究室WiFiに参加する。")
         print("   数十秒待ってから、制御PCでルータのDHCP一覧 or スキャンで新IPを確認。")

@@ -1,11 +1,11 @@
 # Copyright (c) 2026
 # SPDX-License-Identifier: BSD-3-Clause
-"""キーボードで /cmd_vel を出す自作テレオペノード（加算式）。
+"""キーボードで /cmd_vel を出す自作テレオペノード（加算式）＋離着陸。
 
 操作モデル:
     キーを1回押すと、その方向に速度を「STEP だけ加算」する。
     もう一度押すとさらに加算（例: W を2回 → 前 +0.5）。逆キーで減算。
-    Space で全方向ゼロ。
+    Space で全方向ゼロ。離着陸は /tello_action サービスで送る（/cmd_vel とは別系統）。
 
 実機 tello_ros との対応:
     /cmd_vel (Twist) は正規化 -1〜1（スティック倒し具合）。
@@ -15,7 +15,10 @@
 
   W / S : 前後 ±        A / D : 左右 ±
   R / F : 上下 ±        Q / E : 旋回 ±
-  Space : 全停止（全軸0）   Ctrl-C: 終了
+  T : 離陸（takeoff）   L : 着陸（land）     Space : 全停止（全軸0）   Ctrl-C: 終了
+
+  ※ 離着陸は実機（tello_driver が /tello_action を提供）でのみ有効。
+    Sim では tello_action が無いので T/L は警告だけ出して何もしない。
 
 ※ 自分の端末で起動すること（ros2 launch には入れない）。
 ※ position_controller と同時に動かさないこと（/cmd_vel が競合する）。
@@ -35,6 +38,15 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 
+# tello_msgs は実機(tello_ros)をビルドした時だけ存在する。Sim単体では無いことがあるので、
+# 無ければ離着陸機能だけ無効化して、テレオペ本体は動くようにする。
+try:
+    from tello_msgs.srv import TelloAction
+    _HAS_TELLO_ACTION = True
+except ImportError:
+    TelloAction = None
+    _HAS_TELLO_ACTION = False
+
 # キー → (cmd配列のindex, 符号)。index: 0=前後, 1=左右, 2=上下, 3=旋回
 KEY_DIR = {
     "w": (0, 1), "s": (0, -1),
@@ -45,6 +57,7 @@ KEY_DIR = {
 
 HELP = __doc__
 PUBLISH_PERIOD = 0.05  # 秒。保持している速度をこの間隔で流し続ける（20Hz）
+ACTION_SERVICE = "/tello_action"
 
 
 def clamp(v, lo, hi):
@@ -58,7 +71,16 @@ class KeyboardTeleop(Node):
         self.step = float(self.get_parameter("step").value)
         self.cmd = [0.0, 0.0, 0.0, 0.0]       # [前後, 左右, 上下, 旋回]（正規化 -1〜1）
         self.pub = self.create_publisher(Twist, "/cmd_vel", 10)
-        self.get_logger().info(f"keyboard teleop (加算式) step={self.step}")
+
+        # 離着陸サービスのクライアント（tello_msgs があるときだけ）
+        self.action_client = None
+        if _HAS_TELLO_ACTION:
+            self.action_client = self.create_client(TelloAction, ACTION_SERVICE)
+
+        self.get_logger().info(
+            f"keyboard teleop (加算式) step={self.step} "
+            f"離着陸={'有効' if self.action_client else '無効(tello_msgs無し)'}"
+        )
 
     def add(self, idx, sign):
         self.cmd[idx] = clamp(self.cmd[idx] + sign * self.step, -1.0, 1.0)
@@ -73,6 +95,21 @@ class KeyboardTeleop(Node):
         self.get_logger().info(
             f"cmd: 前後={c[0]:+.2f} 左右={c[1]:+.2f} 上下={c[2]:+.2f} 旋回={c[3]:+.2f}"
         )
+
+    def send_action(self, cmd: str):
+        """/tello_action に takeoff/land 等を送る（非同期・/cmd_vel とは別系統）。"""
+        if self.action_client is None:
+            self.get_logger().warn(f"'{cmd}' は無効：tello_msgs が無い（Sim では離着陸不可）")
+            return
+        if not self.action_client.service_is_ready():
+            self.get_logger().warn(
+                f"'{cmd}' を送れない：{ACTION_SERVICE} が見つからない。tello_driver は起動してる？"
+            )
+            return
+        req = TelloAction.Request()
+        req.cmd = cmd
+        self.action_client.call_async(req)  # 応答は待たない（ループを止めない）
+        self.get_logger().info(f"→ {cmd} を送信")
 
     def publish(self):
         msg = Twist()
@@ -104,6 +141,10 @@ def main():
                 break
             elif key == " ":           # 全停止
                 node.stop()
+            elif key == "t":           # 離陸
+                node.send_action("takeoff")
+            elif key == "l":           # 着陸
+                node.send_action("land")
             elif key in KEY_DIR:       # 該当軸に加算
                 idx, sign = KEY_DIR[key]
                 node.add(idx, sign)

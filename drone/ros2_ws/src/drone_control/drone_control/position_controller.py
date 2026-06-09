@@ -44,15 +44,22 @@ class PositionController(Node):
         self.declare_parameter("kp_xy", 0.8)   # 水平の比例ゲイン
         self.declare_parameter("kp_z", 1.0)    # 高さの比例ゲイン
         self.declare_parameter("kp_yaw", 1.0)  # ヨーの比例ゲイン
+        # 安全: 起動直後に勝手に飛ばさない。True なら「最初のposeを受けた地点を
+        # ゴールにして“その場ホールド”」で始まり、/goal_pose(RVizの2D Goal Pose)が
+        # 来て初めて動く。固定ゴールへ即追従したいときだけ false にして goal_* を使う。
+        self.declare_parameter("hold_on_start", True)
 
+        self.hold_on_start = bool(self.get_parameter("hold_on_start").value)
         self.goal = np.array([
             self.get_parameter("goal_x").value,
             self.get_parameter("goal_y").value,
             self.get_parameter("goal_z").value,
         ], dtype=float)
+        self.goal_yaw = float(self.get_parameter("goal_yaw").value)
 
         # --- 状態 ---
         self.have_pose = False
+        self.goal_ready = not self.hold_on_start  # hold時は最初のpose受信で確定する
         self.pos = np.zeros(3)
         self.yaw = 0.0
 
@@ -63,31 +70,44 @@ class PositionController(Node):
 
         # --- 制御ループ：50Hz で回す（mocap更新とは非同期でOK）---
         self.create_timer(0.02, self._control_step)
-        self.get_logger().info(f"position controller up. goal={self.goal.tolist()}")
+        mode = "現在地ホールド開始（/goal_pose 待ち）" if self.hold_on_start \
+            else f"固定ゴール追従 goal={self.goal.tolist()}"
+        self.get_logger().info(f"position controller up. {mode}")
 
     def _on_pose(self, msg: PoseStamped):
-        """今の位置・ヨーを更新。"""
+        """今の位置・ヨーを更新。hold_on_start なら最初の受信地点をゴールに固定。"""
         p = msg.pose.position
         q = msg.pose.orientation
         self.pos = np.array([p.x, p.y, p.z])
         self.yaw = yaw_from_quat(q.x, q.y, q.z, q.w)
         self.have_pose = True
 
+        if not self.goal_ready:
+            # 起動後はじめてのpose → その場を目標にしてホールド（勝手に飛ばない）
+            self.goal = self.pos.copy()
+            self.goal_yaw = self.yaw
+            self.goal_ready = True
+            self.get_logger().info(
+                f"現在地でホールド開始 goal=({self.goal[0]:.2f}, {self.goal[1]:.2f}, "
+                f"{self.goal[2]:.2f}) yaw={self.goal_yaw:.2f}"
+            )
+
     def _on_goal(self, msg: PoseStamped):
         """RViz の 2D Goal Pose 等で XY 目標を更新（高さは現状維持）。"""
         self.goal[0] = msg.pose.position.x
         self.goal[1] = msg.pose.position.y
+        self.goal_ready = True  # hold中でも明示ゴールが来たら動いてよい
         self.get_logger().info(f"new goal xy=({self.goal[0]:.2f}, {self.goal[1]:.2f})")
 
     def _control_step(self):
         """誤差 → 機体座標 → P制御 → /cmd_vel。"""
-        if not self.have_pose:
-            return  # まだ位置が来てない
+        if not self.have_pose or not self.goal_ready:
+            return  # まだ位置が来てない / ゴール未確定（ホールド待ち）
 
         kp_xy = self.get_parameter("kp_xy").value
         kp_z = self.get_parameter("kp_z").value
         kp_yaw = self.get_parameter("kp_yaw").value
-        goal_yaw = self.get_parameter("goal_yaw").value
+        goal_yaw = self.goal_yaw
 
         # 1) 世界座標での位置誤差
         err_w = self.goal - self.pos
