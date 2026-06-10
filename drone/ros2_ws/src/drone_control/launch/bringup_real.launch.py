@@ -26,7 +26,7 @@
 引数:
     drone_ip:=192.168.11.51   実機Telloの(stationモード時の)IP
     rigid_body_id:=1          Motive の Streaming ID（pose_bridge が選ぶ剛体）
-    convert_y_up:=false       false=Motive側でZ-up配信 / true=ここでY-up→Z-up変換
+    convert_y_up:=true        true=Motive側がY-up配信(この研究室の設定)→Z-up変換 / false=素通し
     config_file:=<path>       mocap driver の params.yaml を差し替え
     use_rviz:=false           RViz を起動しない
 """
@@ -99,7 +99,7 @@ def generate_launch_description():
         DeclareLaunchArgument("use_rviz", default_value="true"),
         DeclareLaunchArgument("drone_ip", default_value="192.168.11.51"),
         DeclareLaunchArgument("rigid_body_id", default_value="1"),
-        DeclareLaunchArgument("convert_y_up", default_value="false"),
+        DeclareLaunchArgument("convert_y_up", default_value="true"),
         DeclareLaunchArgument("config_file", default_value=default_mocap_params),
 
         # mocap: OptiTrack → /rigid_bodies（自動 configure→activate）
