@@ -1,0 +1,39 @@
+running egg_info
+creating ../../build/dist_learn/dist_learn.egg-info
+writing ../../build/dist_learn/dist_learn.egg-info/PKG-INFO
+writing dependency_links to ../../build/dist_learn/dist_learn.egg-info/dependency_links.txt
+writing entry points to ../../build/dist_learn/dist_learn.egg-info/entry_points.txt
+writing requirements to ../../build/dist_learn/dist_learn.egg-info/requires.txt
+writing top-level names to ../../build/dist_learn/dist_learn.egg-info/top_level.txt
+writing manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+reading manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+writing manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build
+creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib
+creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+copying dist_learn/collect_real_rollouts.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+copying dist_learn/plot_rollouts.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+copying dist_learn/__init__.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+running install
+running install_lib
+creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/collect_real_rollouts.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/plot_rollouts.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/__init__.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/collect_real_rollouts.py to collect_real_rollouts.cpython-310.pyc
+byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/plot_rollouts.py to plot_rollouts.cpython-310.pyc
+byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index
+creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index
+creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index/packages
+copying resource/dist_learn -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index/packages
+copying package.xml -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/dist_learn
+running install_egg_info
+Copying ../../build/dist_learn/dist_learn.egg-info to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn-0.0.1-py3.10.egg-info
+running install_scripts
+Installing collect_real_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+Installing plot_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+writing list of installed files to '/home/utsubo/research/drone/ros2_ws/build/dist_learn/install.log'

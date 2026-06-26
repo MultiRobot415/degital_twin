@@ -1,0 +1,22 @@
+running develop
+running egg_info
+writing drone_control.egg-info/PKG-INFO
+writing dependency_links to drone_control.egg-info/dependency_links.txt
+writing entry points to drone_control.egg-info/entry_points.txt
+writing requirements to drone_control.egg-info/requires.txt
+writing top-level names to drone_control.egg-info/top_level.txt
+reading manifest file 'drone_control.egg-info/SOURCES.txt'
+writing manifest file 'drone_control.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone-control.egg-link (link to .)
+Installing keyboard_teleop script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+Installing pose_bridge script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+Installing position_controller script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+
+Installed /home/utsubo/research/drone/ros2_ws/build/drone_control
+running symlink_data
+symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/resource/drone_control -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/ament_index/resource_index/packages
+symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/package.xml -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control
+symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/launch/bringup_real.launch.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/launch
+symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/launch/bringup.launch.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/launch
+symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/rviz/tello.rviz -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/rviz

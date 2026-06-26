@@ -1,0 +1,4 @@
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver -- -j32 -l32
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver -- -j32 -l32
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver

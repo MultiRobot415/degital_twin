@@ -1,0 +1,16 @@
+[0.007s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/utsubo/research/drone/ros2_ws/install/drone_control:/home/utsubo/research/drone/ros2_ws/install/dist_learn:/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_msgs -- -j32 -l32
+[0.037s] [  2%] Built target tello_msgs__cpp
+[0.038s] failed to create symbolic link '/home/utsubo/research/drone/ros2_ws/build/tello_msgs/ament_cmake_python/tello_msgs/tello_msgs' because existing path cannot be removed: Is a directory
+[0.039s] gmake[2]: *** [CMakeFiles/ament_cmake_python_symlink_tello_msgs.dir/build.make:70: CMakeFiles/ament_cmake_python_symlink_tello_msgs] Error 1
+[0.039s] gmake[1]: *** [CMakeFiles/Makefile2:440: CMakeFiles/ament_cmake_python_symlink_tello_msgs.dir/all] Error 2
+[0.039s] gmake[1]: *** Waiting for unfinished jobs....
+[0.039s] [  4%] Built target tello_msgs__rs
+[0.039s] [ 14%] Built target tello_msgs__rosidl_generator_c
+[0.044s] [35m[1mConsolidate compiler generated dependencies of target tello_msgs__rosidl_typesupport_introspection_cpp[0m
+[0.044s] [35m[1mConsolidate compiler generated dependencies of target tello_msgs__rosidl_typesupport_cpp[0m
+[0.044s] [35m[1mConsolidate compiler generated dependencies of target tello_msgs__rosidl_typesupport_fastrtps_cpp[0m
+[0.053s] [ 25%] Built target tello_msgs__rosidl_typesupport_cpp
+[0.053s] [ 35%] Built target tello_msgs__rosidl_typesupport_introspection_cpp
+[0.054s] [ 45%] Built target tello_msgs__rosidl_typesupport_fastrtps_cpp
+[0.055s] gmake: *** [Makefile:146: all] Error 2
+[0.064s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/utsubo/research/drone/ros2_ws/install/drone_control:/home/utsubo/research/drone/ros2_ws/install/dist_learn:/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_msgs -- -j32 -l32

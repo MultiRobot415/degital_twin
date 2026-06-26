@@ -1,0 +1,17 @@
+Consolidate compiler generated dependencies of target tello_driver_node
+Consolidate compiler generated dependencies of target tello_driver_main
+Consolidate compiler generated dependencies of target tello_joy_main
+[  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o
+[  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o
+[ 13%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o
+[ 18%] Building CXX object CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o
+[ 22%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o
+[ 27%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o
+[ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o
+[ 36%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o
+[ 40%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o
+[ 45%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o
+[ 50%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o
+[ 54%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o
+[ 59%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o
+[ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o

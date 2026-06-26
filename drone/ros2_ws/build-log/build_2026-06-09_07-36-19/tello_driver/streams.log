@@ -1,0 +1,46 @@
+[0.012s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32
+[0.075s] [  4%] Building CXX object CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o
+[0.077s] [  9%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o
+[0.077s] [ 13%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o
+[0.077s] [ 18%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o
+[0.078s] [ 22%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o
+[0.078s] [ 27%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o
+[0.078s] [ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o
+[0.078s] [ 36%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o
+[0.079s] [ 40%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o
+[0.079s] [ 45%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o
+[0.080s] [ 50%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o
+[0.080s] [ 54%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o
+[0.080s] [ 63%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o
+[0.080s] [ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o
+[0.236s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.236s]    49 | #include "rclcpp_components/register_node_macro.hpp"
+[0.236s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.236s] compilation terminated.
+[0.237s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.237s]    49 | #include "rclcpp_components/register_node_macro.hpp"
+[0.237s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.237s] compilation terminated.
+[0.238s] gmake[2]: *** [CMakeFiles/tello_joy_node.dir/build.make:76: CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o] Error 1
+[0.238s] gmake[1]: *** [CMakeFiles/Makefile2:197: CMakeFiles/tello_joy_node.dir/all] Error 2
+[0.238s] gmake[1]: *** Waiting for unfinished jobs....
+[0.238s] gmake[2]: *** [CMakeFiles/tello_joy_main.dir/build.make:90: CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o] Error 1
+[0.238s] gmake[1]: *** [CMakeFiles/Makefile2:249: CMakeFiles/tello_joy_main.dir/all] Error 2
+[0.359s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:180:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.359s]   180 | #include "rclcpp_components/register_node_macro.hpp"
+[0.359s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.359s] compilation terminated.
+[0.361s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:76: CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o] Error 1
+[0.361s] gmake[2]: *** Waiting for unfinished jobs....
+[0.525s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:180:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.525s]   180 | #include "rclcpp_components/register_node_macro.hpp"
+[0.525s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.525s] compilation terminated.
+[0.528s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:90: CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o] Error 1
+[0.528s] gmake[2]: *** Waiting for unfinished jobs....
+[0.855s] [ 68%] Linking CXX executable tello_emulator
+[0.908s] [ 68%] Built target tello_emulator
+[3.333s] gmake[1]: *** [CMakeFiles/Makefile2:223: CMakeFiles/tello_driver_main.dir/all] Error 2
+[3.652s] gmake[1]: *** [CMakeFiles/Makefile2:145: CMakeFiles/tello_driver_node.dir/all] Error 2
+[3.652s] gmake: *** [Makefile:146: all] Error 2
+[3.653s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver' returned '2': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32

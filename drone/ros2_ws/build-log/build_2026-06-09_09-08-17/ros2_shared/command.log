@@ -1,0 +1,4 @@
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/ros2_shared': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/ros2_shared -- -j32 -l32
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/ros2_shared' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/ros2_shared -- -j32 -l32
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/ros2_shared': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/ros2_shared
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/ros2_shared' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/ros2_shared

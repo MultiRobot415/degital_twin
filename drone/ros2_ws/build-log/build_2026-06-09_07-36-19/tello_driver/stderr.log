@@ -1,0 +1,28 @@
+/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+   49 | #include "rclcpp_components/register_node_macro.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+   49 | #include "rclcpp_components/register_node_macro.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+gmake[2]: *** [CMakeFiles/tello_joy_node.dir/build.make:76: CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:197: CMakeFiles/tello_joy_node.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+gmake[2]: *** [CMakeFiles/tello_joy_main.dir/build.make:90: CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:249: CMakeFiles/tello_joy_main.dir/all] Error 2
+/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:180:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+  180 | #include "rclcpp_components/register_node_macro.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:76: CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:180:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+  180 | #include "rclcpp_components/register_node_macro.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:90: CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:223: CMakeFiles/tello_driver_main.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:145: CMakeFiles/tello_driver_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

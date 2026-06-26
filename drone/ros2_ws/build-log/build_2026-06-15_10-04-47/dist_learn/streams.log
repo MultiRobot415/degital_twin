@@ -1,0 +1,41 @@
+[0.362s] Invoking command in '/home/utsubo/research/drone/ros2_ws/src/dist_learn': CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/tello_driver:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/dist_learn/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/dist_learn build --build-base /home/utsubo/research/drone/ros2_ws/build/dist_learn/build install --record /home/utsubo/research/drone/ros2_ws/build/dist_learn/install.log --single-version-externally-managed install_data
+[0.467s] running egg_info
+[0.467s] creating ../../build/dist_learn/dist_learn.egg-info
+[0.467s] writing ../../build/dist_learn/dist_learn.egg-info/PKG-INFO
+[0.467s] writing dependency_links to ../../build/dist_learn/dist_learn.egg-info/dependency_links.txt
+[0.468s] writing entry points to ../../build/dist_learn/dist_learn.egg-info/entry_points.txt
+[0.468s] writing requirements to ../../build/dist_learn/dist_learn.egg-info/requires.txt
+[0.468s] writing top-level names to ../../build/dist_learn/dist_learn.egg-info/top_level.txt
+[0.468s] writing manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+[0.468s] reading manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+[0.468s] writing manifest file '../../build/dist_learn/dist_learn.egg-info/SOURCES.txt'
+[0.468s] running build
+[0.468s] running build_py
+[0.468s] creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build
+[0.469s] creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib
+[0.469s] creating /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+[0.469s] copying dist_learn/collect_real_rollouts.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+[0.469s] copying dist_learn/plot_rollouts.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+[0.469s] copying dist_learn/__init__.py -> /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn
+[0.469s] running install
+[0.469s] running install_lib
+[0.469s] creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+[0.469s] copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/collect_real_rollouts.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+[0.469s] copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/plot_rollouts.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+[0.469s] copying /home/utsubo/research/drone/ros2_ws/build/dist_learn/build/lib/dist_learn/__init__.py -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn
+[0.469s] byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/collect_real_rollouts.py to collect_real_rollouts.cpython-310.pyc
+[0.471s] byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/plot_rollouts.py to plot_rollouts.cpython-310.pyc
+[0.472s] byte-compiling /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn/__init__.py to __init__.cpython-310.pyc
+[0.472s] running install_data
+[0.472s] creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index
+[0.472s] creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index
+[0.472s] creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index/packages
+[0.472s] copying resource/dist_learn -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/ament_index/resource_index/packages
+[0.472s] copying package.xml -> /home/utsubo/research/drone/ros2_ws/install/dist_learn/share/dist_learn
+[0.472s] running install_egg_info
+[0.473s] Copying ../../build/dist_learn/dist_learn.egg-info to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist_learn-0.0.1-py3.10.egg-info
+[0.473s] running install_scripts
+[0.482s] Installing collect_real_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+[0.482s] Installing plot_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+[0.482s] writing list of installed files to '/home/utsubo/research/drone/ros2_ws/build/dist_learn/install.log'
+[0.496s] Invoked command in '/home/utsubo/research/drone/ros2_ws/src/dist_learn' returned '0': CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/tello_driver:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/dist_learn/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/dist_learn build --build-base /home/utsubo/research/drone/ros2_ws/build/dist_learn/build install --record /home/utsubo/research/drone/ros2_ws/build/dist_learn/install.log --single-version-externally-managed install_data

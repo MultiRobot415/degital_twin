@@ -1,0 +1,10 @@
+[0.000000] (-) TimerEvent: {}
+[0.000084] (-) JobUnselected: {'identifier': 'dist_learn'}
+[0.000112] (-) JobUnselected: {'identifier': 'mocap4r2_optitrack_driver'}
+[0.000156] (-) JobUnselected: {'identifier': 'ros2_shared'}
+[0.000169] (-) JobUnselected: {'identifier': 'tello_driver'}
+[0.000181] (-) JobUnselected: {'identifier': 'tello_msgs'}
+[0.000194] (drone_control) JobQueued: {'identifier': 'drone_control', 'dependencies': OrderedDict([('tello_msgs', '/home/utsubo/research/install/tello_msgs')])}
+[0.000211] (drone_control) JobStarted: {'identifier': 'drone_control'}
+[0.003722] (drone_control) JobEnded: {'identifier': 'drone_control', 'rc': 1}
+[0.013892] (-) EventReactorShutdown: {}

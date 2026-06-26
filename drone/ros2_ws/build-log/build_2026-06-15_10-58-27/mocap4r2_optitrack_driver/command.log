@@ -1,0 +1,1 @@
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/utsubo/research/drone/ros2_ws/install/drone_control:/home/utsubo/research/drone/ros2_ws/install/dist_learn:/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/mocap4r2_optitrack_driver -- -j32 -l32

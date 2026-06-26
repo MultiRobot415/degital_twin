@@ -1,0 +1,23 @@
+[0.366s] Invoking command in '/home/utsubo/research/drone/ros2_ws/src/drone_control': CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/tello_driver:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data
+[0.464s] running egg_info
+[0.464s] writing ../../build/drone_control/drone_control.egg-info/PKG-INFO
+[0.464s] writing dependency_links to ../../build/drone_control/drone_control.egg-info/dependency_links.txt
+[0.464s] writing entry points to ../../build/drone_control/drone_control.egg-info/entry_points.txt
+[0.464s] writing requirements to ../../build/drone_control/drone_control.egg-info/requires.txt
+[0.464s] writing top-level names to ../../build/drone_control/drone_control.egg-info/top_level.txt
+[0.465s] reading manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.465s] writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.465s] running build
+[0.465s] running build_py
+[0.465s] running install
+[0.465s] running install_lib
+[0.466s] running install_data
+[0.466s] running install_egg_info
+[0.467s] removing '/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info' (and everything under it)
+[0.467s] Copying ../../build/drone_control/drone_control.egg-info to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info
+[0.467s] running install_scripts
+[0.476s] Installing keyboard_teleop script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.476s] Installing pose_bridge script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.476s] Installing position_controller script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.476s] writing list of installed files to '/home/utsubo/research/drone/ros2_ws/build/drone_control/install.log'
+[0.487s] Invoked command in '/home/utsubo/research/drone/ros2_ws/src/drone_control' returned '0': CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/tello_driver:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib:/home/utsubo/research/drone/ros2_ws/install/mocap4r2_optitrack_driver/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data

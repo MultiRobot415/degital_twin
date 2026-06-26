@@ -1,0 +1,117 @@
+[0.000000] (-) TimerEvent: {}
+[0.000318] (tello_driver) JobQueued: {'identifier': 'tello_driver', 'dependencies': OrderedDict()}
+[0.000379] (tello_driver) JobStarted: {'identifier': 'tello_driver'}
+[0.003765] (tello_driver) JobProgress: {'identifier': 'tello_driver', 'progress': 'cmake'}
+[0.004157] (tello_driver) JobProgress: {'identifier': 'tello_driver', 'progress': 'build'}
+[0.004706] (tello_driver) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/utsubo/research/drone/ros2_ws/build/tello_driver', '--', '-j32', '-l32'], 'cwd': '/home/utsubo/research/drone/ros2_ws/build/tello_driver', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/utsubo/research'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('AI_AGENT', 'claude-code_2-1-168_agent'), ('USER', 'utsubo'), ('CLAUDE_CODE_ENTRYPOINT', 'claude-vscode'), ('VSCODE_NLS_CONFIG', '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/code/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}'), ('GIT_EDITOR', 'true'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'x11'), ('CLAUDE_AGENT_SDK_VERSION', '0.3.168'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/utsubo'), ('CHROME_DESKTOP', 'code.desktop'), ('OLDPWD', '/home/utsubo'), ('DESKTOP_SESSION', 'ubuntu'), ('VSCODE_IPC_HOOK', '/run/user/1001/vscode-8ed1e365-1.12-main.sock'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('SYSTEMD_EXEC_PID', '99335'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1001/bus'), ('COLORTERM', 'truecolor'), ('VSCODE_CRASH_REPORTER_PROCESS_TYPE', 'extensionHost'), ('VSCODE_L10N_BUNDLE_LOCATION', ''), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'utsubo'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'utsubo'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('WINDOWPATH', '5'), ('MCP_CONNECTION_NONBLOCKING', 'true'), ('PATH', '/home/utsubo/.local/bin:/home/utsubo/.local/bin:/opt/ros/humble/bin:/home/utsubo/.local/bin:/home/utsubo/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/multirobot-4CZZ:@/tmp/.ICE-unix/99088,unix/multirobot-4CZZ:/tmp/.ICE-unix/99088'), ('COREPACK_ENABLE_AUTO_PIN', '0'), ('UV_CACHE_DIR', '/opt/nl_shared/uv-cache'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/de90edb0_5ccc_48cb_8224_ddf0687c6b6b'), ('XDG_RUNTIME_DIR', '/run/user/1001'), ('GDK_BACKEND', 'x11'), ('CLAUDE_EFFORT', 'medium'), ('DISPLAY', ':1'), ('NoDefaultCurrentDirectoryInExePath', '1'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1001/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.89'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1001/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('ELECTRON_RUN_AS_NODE', '1'), ('GDMSESSION', 'ubuntu'), ('CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING', 'true'), ('CLAUDE_CODE_SESSION_ID', 'c707deac-9bee-423a-81e9-8688139b5cf3'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CLAUDECODE', '1'), ('GPG_AGENT_INFO', '/run/user/1001/gnupg/S.gpg-agent:0:1'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/utsubo/research/drone/ros2_ws/build/tello_driver'), ('VSCODE_CLI', '1'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('VSCODE_CODE_CACHE_PATH', '/home/utsubo/.config/Code/CachedData/8761a5560cfd65fdd19ce7e2bd18dab5c0a4d84e'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('CLAUDE_CODE_EXECPATH', '/home/utsubo/.vscode/extensions/anthropic.claude-code-2.1.168-linux-x64/resources/native-binary/claude'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('CLAUDE_CODE_ENABLE_TASKS', '0'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('ELECTRON_NO_ATTACH_CONSOLE', '1'), ('VSCODE_PID', '99909'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.034700] (tello_driver) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target tello_driver_node\n'}
+[0.036602] (tello_driver) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target tello_driver_main\n'}
+[0.038554] (tello_driver) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target tello_joy_main\n'}
+[0.039863] (tello_driver) StdoutLine: {'line': b'[  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o\n'}
+[0.039958] (tello_driver) StdoutLine: {'line': b'[  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o\n'}
+[0.040229] (tello_driver) StdoutLine: {'line': b'[ 13%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o\n'}
+[0.041086] (tello_driver) StdoutLine: {'line': b'[ 18%] Building CXX object CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o\n'}
+[0.041416] (tello_driver) StdoutLine: {'line': b'[ 22%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o\n'}
+[0.042979] (tello_driver) StdoutLine: {'line': b'[ 27%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o\n'}
+[0.044029] (tello_driver) StdoutLine: {'line': b'[ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o\n'}
+[0.044853] (tello_driver) StdoutLine: {'line': b'[ 36%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o\n'}
+[0.045021] (tello_driver) StdoutLine: {'line': b'[ 40%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o\n'}
+[0.045842] (tello_driver) StdoutLine: {'line': b'[ 45%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o\n'}
+[0.046186] (tello_driver) StdoutLine: {'line': b'[ 50%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o\n'}
+[0.046273] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:1:\n'}
+[0.046499] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.046690] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.046740] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.046786] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_socket.cpp:1:\n'}
+[0.046834] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.046881] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.046926] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.046972] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.047017] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.047071] (tello_driver) StdoutLine: {'line': b'[ 54%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o\n'}
+[0.047119] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/state_socket.cpp:1:\n'}
+[0.047165] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.047211] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.047256] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.047303] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.047349] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:90: CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o] Error 1\n'}
+[0.047395] (tello_driver) StderrLine: {'line': b'gmake[2]: *** Waiting for unfinished jobs....\n'}
+[0.047445] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:76: CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o] Error 1\n'}
+[0.047492] (tello_driver) StdoutLine: {'line': b'[ 59%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o\n'}
+[0.047539] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:118: CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o] Error 1\n'}
+[0.047583] (tello_driver) StdoutLine: {'line': b'[ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o\n'}
+[0.048307] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/command_socket.cpp:1:\n'}
+[0.048371] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.048398] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.048419] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.048439] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.048459] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/command_socket.cpp:1:\n'}
+[0.048478] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.048498] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.048519] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.048560] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.048661] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:118: CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o] Error 1\n'}
+[0.048683] (tello_driver) StderrLine: {'line': b'gmake[2]: *** Waiting for unfinished jobs....\n'}
+[0.048701] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:104: CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o] Error 1\n'}
+[0.051516] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/video_socket.cpp:1:\n'}
+[0.051553] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.051581] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.051610] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.051637] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.051858] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:1:\n'}
+[0.051890] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.051920] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.051948] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.051976] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.052004] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/video_socket.cpp:1:\n'}
+[0.052036] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.052069] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.052098] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.052127] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.052230] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:146: CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o] Error 1\n'}
+[0.052263] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:90: CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o] Error 1\n'}
+[0.052494] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:132: CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o] Error 1\n'}
+[0.052650] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/state_socket.cpp:1:\n'}
+[0.052722] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.052762] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.052791] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.052809] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.052827] (tello_driver) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:145: CMakeFiles/tello_driver_node.dir/all] Error 2\n'}
+[0.052845] (tello_driver) StderrLine: {'line': b'gmake[1]: *** Waiting for unfinished jobs....\n'}
+[0.053011] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:132: CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o] Error 1\n'}
+[0.053235] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_main.cpp:1:\n'}
+[0.053259] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.053277] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.053295] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.053314] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.053478] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:76: CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o] Error 1\n'}
+[0.053776] (tello_driver) StderrLine: {'line': b'In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_socket.cpp:1:\n'}
+[0.053797] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.053815] (tello_driver) StderrLine: {'line': b'    1 | #include <asio.hpp>\n'}
+[0.053833] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.053850] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.054096] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:104: CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o] Error 1\n'}
+[0.054228] (tello_driver) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:223: CMakeFiles/tello_driver_main.dir/all] Error 2\n'}
+[0.070158] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_emulator.cpp:5:10: fatal error: asio.hpp: No such file or directory\n'}
+[0.070215] (tello_driver) StderrLine: {'line': b'    5 | #include <asio.hpp>\n'}
+[0.070237] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~\n'}
+[0.070258] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.070777] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_emulator.dir/build.make:76: CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o] Error 1\n'}
+[0.070807] (tello_driver) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:171: CMakeFiles/tello_emulator.dir/all] Error 2\n'}
+[0.099918] (-) TimerEvent: {}
+[0.134898] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory\n'}
+[0.134995] (tello_driver) StderrLine: {'line': b'   49 | #include "rclcpp_components/register_node_macro.hpp"\n'}
+[0.135020] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[0.135048] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.135068] (tello_driver) StderrLine: {'line': b'/home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory\n'}
+[0.135087] (tello_driver) StderrLine: {'line': b'   49 | #include "rclcpp_components/register_node_macro.hpp"\n'}
+[0.135105] (tello_driver) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[0.135124] (tello_driver) StderrLine: {'line': b'compilation terminated.\n'}
+[0.136214] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_joy_node.dir/build.make:76: CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o] Error 1\n'}
+[0.136451] (tello_driver) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:197: CMakeFiles/tello_joy_node.dir/all] Error 2\n'}
+[0.136504] (tello_driver) StderrLine: {'line': b'gmake[2]: *** [CMakeFiles/tello_joy_main.dir/build.make:90: CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o] Error 1\n'}
+[0.136533] (tello_driver) StderrLine: {'line': b'gmake[1]: *** [CMakeFiles/Makefile2:249: CMakeFiles/tello_joy_main.dir/all] Error 2\n'}
+[0.136761] (tello_driver) StderrLine: {'line': b'gmake: *** [Makefile:146: all] Error 2\n'}
+[0.138654] (tello_driver) CommandEnded: {'returncode': 2}
+[0.143712] (tello_driver) JobEnded: {'identifier': 'tello_driver', 'rc': 2}
+[0.153962] (-) EventReactorShutdown: {}

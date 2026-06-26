@@ -1,0 +1,109 @@
+[0.005s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32
+[0.034s] Consolidate compiler generated dependencies of target tello_driver_node
+[0.036s] Consolidate compiler generated dependencies of target tello_driver_main
+[0.038s] Consolidate compiler generated dependencies of target tello_joy_main
+[0.040s] [  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o
+[0.040s] [  9%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o
+[0.040s] [ 13%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o
+[0.041s] [ 18%] Building CXX object CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o
+[0.041s] [ 22%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o
+[0.043s] [ 27%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o
+[0.044s] [ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o
+[0.045s] [ 36%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o
+[0.045s] [ 40%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o
+[0.046s] [ 45%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o
+[0.046s] [ 50%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o
+[0.046s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:1:
+[0.046s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.046s]     1 | #include <asio.hpp>
+[0.046s]       |          ^~~~~~~~~~
+[0.046s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_socket.cpp:1:
+[0.046s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.047s]     1 | #include <asio.hpp>
+[0.047s]       |          ^~~~~~~~~~
+[0.047s] compilation terminated.
+[0.047s] compilation terminated.
+[0.047s] [ 54%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o
+[0.047s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/state_socket.cpp:1:
+[0.047s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.047s]     1 | #include <asio.hpp>
+[0.047s]       |          ^~~~~~~~~~
+[0.047s] compilation terminated.
+[0.047s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:90: CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o] Error 1
+[0.047s] gmake[2]: *** Waiting for unfinished jobs....
+[0.047s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:76: CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o] Error 1
+[0.047s] [ 59%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o
+[0.047s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:118: CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o] Error 1
+[0.047s] [ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o
+[0.048s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/command_socket.cpp:1:
+[0.048s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.048s]     1 | #include <asio.hpp>
+[0.048s]       |          ^~~~~~~~~~
+[0.048s] compilation terminated.
+[0.048s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/command_socket.cpp:1:
+[0.048s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.048s]     1 | #include <asio.hpp>
+[0.048s]       |          ^~~~~~~~~~
+[0.048s] compilation terminated.
+[0.048s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:118: CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o] Error 1
+[0.048s] gmake[2]: *** Waiting for unfinished jobs....
+[0.048s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:104: CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o] Error 1
+[0.051s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/video_socket.cpp:1:
+[0.051s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.051s]     1 | #include <asio.hpp>
+[0.051s]       |          ^~~~~~~~~~
+[0.051s] compilation terminated.
+[0.051s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_node.cpp:1:
+[0.052s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.052s]     1 | #include <asio.hpp>
+[0.052s]       |          ^~~~~~~~~~
+[0.052s] compilation terminated.
+[0.052s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/video_socket.cpp:1:
+[0.052s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.052s]     1 | #include <asio.hpp>
+[0.052s]       |          ^~~~~~~~~~
+[0.052s] compilation terminated.
+[0.052s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:146: CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o] Error 1
+[0.052s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:90: CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o] Error 1
+[0.052s] gmake[2]: *** [CMakeFiles/tello_driver_node.dir/build.make:132: CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o] Error 1
+[0.052s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/state_socket.cpp:1:
+[0.052s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.052s]     1 | #include <asio.hpp>
+[0.052s]       |          ^~~~~~~~~~
+[0.052s] compilation terminated.
+[0.052s] gmake[1]: *** [CMakeFiles/Makefile2:145: CMakeFiles/tello_driver_node.dir/all] Error 2
+[0.052s] gmake[1]: *** Waiting for unfinished jobs....
+[0.053s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:132: CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o] Error 1
+[0.053s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_driver_main.cpp:1:
+[0.053s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.053s]     1 | #include <asio.hpp>
+[0.053s]       |          ^~~~~~~~~~
+[0.053s] compilation terminated.
+[0.053s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:76: CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o] Error 1
+[0.053s] In file included from /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_socket.cpp:1:
+[0.053s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/include/tello_driver_node.hpp:1:10: fatal error: asio.hpp: No such file or directory
+[0.053s]     1 | #include <asio.hpp>
+[0.053s]       |          ^~~~~~~~~~
+[0.053s] compilation terminated.
+[0.054s] gmake[2]: *** [CMakeFiles/tello_driver_main.dir/build.make:104: CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o] Error 1
+[0.054s] gmake[1]: *** [CMakeFiles/Makefile2:223: CMakeFiles/tello_driver_main.dir/all] Error 2
+[0.070s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_emulator.cpp:5:10: fatal error: asio.hpp: No such file or directory
+[0.070s]     5 | #include <asio.hpp>
+[0.070s]       |          ^~~~~~~~~~
+[0.070s] compilation terminated.
+[0.070s] gmake[2]: *** [CMakeFiles/tello_emulator.dir/build.make:76: CMakeFiles/tello_emulator.dir/src/tello_emulator.cpp.o] Error 1
+[0.070s] gmake[1]: *** [CMakeFiles/Makefile2:171: CMakeFiles/tello_emulator.dir/all] Error 2
+[0.135s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.135s]    49 | #include "rclcpp_components/register_node_macro.hpp"
+[0.135s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.135s] compilation terminated.
+[0.135s] /home/utsubo/research/drone/ros2_ws/src/tello_ros/tello_driver/src/tello_joy_node.cpp:49:10: fatal error: rclcpp_components/register_node_macro.hpp: No such file or directory
+[0.135s]    49 | #include "rclcpp_components/register_node_macro.hpp"
+[0.135s]       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.135s] compilation terminated.
+[0.136s] gmake[2]: *** [CMakeFiles/tello_joy_node.dir/build.make:76: CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o] Error 1
+[0.136s] gmake[1]: *** [CMakeFiles/Makefile2:197: CMakeFiles/tello_joy_node.dir/all] Error 2
+[0.136s] gmake[2]: *** [CMakeFiles/tello_joy_main.dir/build.make:90: CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o] Error 1
+[0.136s] gmake[1]: *** [CMakeFiles/Makefile2:249: CMakeFiles/tello_joy_main.dir/all] Error 2
+[0.136s] gmake: *** [Makefile:146: all] Error 2
+[0.138s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver' returned '2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32

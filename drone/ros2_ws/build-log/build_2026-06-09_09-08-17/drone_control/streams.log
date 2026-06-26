@@ -1,0 +1,23 @@
+[0.251s] Invoking command in '/home/utsubo/research/drone/ros2_ws/src/drone_control': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data
+[0.352s] running egg_info
+[0.353s] writing ../../build/drone_control/drone_control.egg-info/PKG-INFO
+[0.353s] writing dependency_links to ../../build/drone_control/drone_control.egg-info/dependency_links.txt
+[0.353s] writing entry points to ../../build/drone_control/drone_control.egg-info/entry_points.txt
+[0.353s] writing requirements to ../../build/drone_control/drone_control.egg-info/requires.txt
+[0.353s] writing top-level names to ../../build/drone_control/drone_control.egg-info/top_level.txt
+[0.354s] reading manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.354s] writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.354s] running build
+[0.354s] running build_py
+[0.354s] running install
+[0.354s] running install_lib
+[0.355s] running install_data
+[0.355s] running install_egg_info
+[0.356s] removing '/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info' (and everything under it)
+[0.356s] Copying ../../build/drone_control/drone_control.egg-info to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info
+[0.356s] running install_scripts
+[0.365s] Installing keyboard_teleop script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.365s] Installing pose_bridge script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.365s] Installing position_controller script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.365s] writing list of installed files to '/home/utsubo/research/drone/ros2_ws/build/drone_control/install.log'
+[0.375s] Invoked command in '/home/utsubo/research/drone/ros2_ws/src/drone_control' returned '0': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data

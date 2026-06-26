@@ -1,0 +1,24 @@
+[0.352s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/drone_control': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/utsubo/research/drone/ros2_ws/build/drone_control/build --no-deps symlink_data --force
+[0.454s] running develop
+[0.511s] running egg_info
+[0.511s] writing drone_control.egg-info/PKG-INFO
+[0.511s] writing dependency_links to drone_control.egg-info/dependency_links.txt
+[0.511s] writing entry points to drone_control.egg-info/entry_points.txt
+[0.511s] writing requirements to drone_control.egg-info/requires.txt
+[0.511s] writing top-level names to drone_control.egg-info/top_level.txt
+[0.512s] reading manifest file 'drone_control.egg-info/SOURCES.txt'
+[0.513s] writing manifest file 'drone_control.egg-info/SOURCES.txt'
+[0.513s] running build_ext
+[0.513s] Creating /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone-control.egg-link (link to .)
+[0.514s] Installing keyboard_teleop script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.514s] Installing pose_bridge script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.514s] Installing position_controller script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.514s] 
+[0.514s] Installed /home/utsubo/research/drone/ros2_ws/build/drone_control
+[0.514s] running symlink_data
+[0.514s] symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/resource/drone_control -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/ament_index/resource_index/packages
+[0.514s] symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/package.xml -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control
+[0.514s] symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/launch/bringup_real.launch.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/launch
+[0.514s] symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/launch/bringup.launch.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/launch
+[0.514s] symbolically linking /home/utsubo/research/drone/ros2_ws/build/drone_control/rviz/tello.rviz -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/rviz
+[0.532s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/drone_control' returned '0': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/utsubo/research/drone/ros2_ws/build/drone_control/build --no-deps symlink_data --force

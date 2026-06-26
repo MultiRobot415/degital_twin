@@ -1,0 +1,85 @@
+[0.006s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32
+[0.027s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.111s] -- Found camera_calibration_parsers: 3.1.12 (/opt/ros/humble/share/camera_calibration_parsers/cmake)
+[0.128s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.129s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.132s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.136s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.141s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.155s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.156s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.208s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.243s] -- Found class_loader: 2.2.0 (/opt/ros/humble/share/class_loader/cmake)
+[0.244s] -- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)
+[0.250s] -- Found rclcpp_components: 16.0.19 (/opt/ros/humble/share/rclcpp_components/cmake)
+[0.257s] -- Found ros2_shared: 0.1.0 (/home/utsubo/research/drone/ros2_ws/install/ros2_shared/share/ros2_shared/cmake)
+[0.258s] -- Found tello_msgs: 0.1.0 (/home/utsubo/research/drone/ros2_ws/install/tello_msgs/share/tello_msgs/cmake)
+[0.295s] -- Configuring done
+[0.308s] -- Generating done
+[0.313s] -- Build files have been written to: /home/utsubo/research/drone/ros2_ws/build/tello_driver
+[0.332s] Consolidate compiler generated dependencies of target tello_emulator
+[0.332s] Consolidate compiler generated dependencies of target tello_joy_main
+[0.334s] [  4%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o
+[0.340s] [ 13%] Built target tello_emulator
+[0.341s] [ 18%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_main.cpp.o
+[0.341s] [ 22%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o
+[0.344s] Consolidate compiler generated dependencies of target tello_driver_node
+[0.347s] Consolidate compiler generated dependencies of target tello_driver_main
+[0.356s] [ 27%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o
+[0.358s] [ 31%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o
+[0.358s] [ 36%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o
+[0.358s] [ 45%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o
+[0.358s] [ 45%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o
+[0.359s] [ 50%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o
+[0.359s] [ 54%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o
+[0.360s] [ 59%] Building CXX object CMakeFiles/tello_driver_node.dir/h264decoder/h264decoder.cpp.o
+[0.362s] [ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o
+[0.362s] [ 68%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o
+[0.362s] [ 72%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o
+[0.363s] [ 77%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o
+[0.363s] [ 81%] Building CXX object CMakeFiles/tello_driver_main.dir/h264decoder/h264decoder.cpp.o
+[5.553s] [ 86%] Linking CXX shared library libtello_joy_node.so
+[5.598s] [ 90%] Linking CXX shared library libtello_driver_node.so
+[5.720s] [ 95%] Linking CXX executable tello_joy_main
+[5.791s] [ 95%] Built target tello_joy_node
+[5.938s] [ 95%] Built target tello_joy_main
+[6.027s] [ 95%] Built target tello_driver_node
+[6.281s] [100%] Linking CXX executable tello_driver_main
+[6.803s] [100%] Built target tello_driver_main
+[6.810s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver' returned '0': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_driver -- -j32 -l32
+[6.811s] Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/tello_driver
+[6.817s] -- Install configuration: ""
+[6.817s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/library_path.sh
+[6.817s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/library_path.dsv
+[6.817s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_driver_node.so
+[6.824s] -- Set runtime path of "/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_driver_node.so" to ""
+[6.824s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_joy_node.so
+[6.829s] -- Set runtime path of "/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_joy_node.so" to ""
+[6.829s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_driver_main
+[6.831s] -- Set runtime path of "/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_driver_main" to ""
+[6.831s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_joy_main
+[6.833s] -- Set runtime path of "/home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_joy_main" to ""
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_emulator
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cfg
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cfg/camera_info.yaml
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/teleop_launch.py
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/emulators_launch.py
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/emulator_launch.py
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/package_run_dependencies/tello_driver
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/parent_prefix_path/tello_driver
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/ament_prefix_path.sh
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/ament_prefix_path.dsv
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/path.sh
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/path.dsv
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.bash
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.sh
+[6.833s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.zsh
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.dsv
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/package.dsv
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/packages/tello_driver
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/rclcpp_components/tello_driver
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cmake/tello_driverConfig.cmake
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cmake/tello_driverConfig-version.cmake
+[6.834s] -- Installing: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/package.xml
+[6.834s] Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_driver' returned '0': AMENT_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs:/home/utsubo/research/drone/ros2_ws/install/ros2_shared:/opt/ros/humble LD_LIBRARY_PATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/utsubo/research/drone/ros2_ws/install/tello_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/tello_driver

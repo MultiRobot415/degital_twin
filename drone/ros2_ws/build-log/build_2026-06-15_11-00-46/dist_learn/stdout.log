@@ -1,0 +1,16 @@
+running develop
+running egg_info
+writing dist_learn.egg-info/PKG-INFO
+writing dependency_links to dist_learn.egg-info/dependency_links.txt
+writing entry points to dist_learn.egg-info/entry_points.txt
+writing requirements to dist_learn.egg-info/requires.txt
+writing top-level names to dist_learn.egg-info/top_level.txt
+reading manifest file 'dist_learn.egg-info/SOURCES.txt'
+writing manifest file 'dist_learn.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/python3.10/site-packages/dist-learn.egg-link (link to .)
+Installing collect_real_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+Installing plot_rollouts script to /home/utsubo/research/drone/ros2_ws/install/dist_learn/lib/dist_learn
+
+Installed /home/utsubo/research/drone/ros2_ws/build/dist_learn
+running symlink_data

@@ -1,0 +1,31 @@
+[0.241s] Invoking command in '/home/utsubo/research/drone/ros2_ws/src/drone_control': PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data
+[0.334s] running egg_info
+[0.334s] writing ../../build/drone_control/drone_control.egg-info/PKG-INFO
+[0.335s] writing dependency_links to ../../build/drone_control/drone_control.egg-info/dependency_links.txt
+[0.335s] writing entry points to ../../build/drone_control/drone_control.egg-info/entry_points.txt
+[0.335s] writing requirements to ../../build/drone_control/drone_control.egg-info/requires.txt
+[0.335s] writing top-level names to ../../build/drone_control/drone_control.egg-info/top_level.txt
+[0.335s] reading manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.336s] writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[0.336s] running build
+[0.336s] running build_py
+[0.336s] copying drone_control/position_controller.py -> /home/utsubo/research/drone/ros2_ws/build/drone_control/build/lib/drone_control
+[0.336s] copying drone_control/keyboard_teleop.py -> /home/utsubo/research/drone/ros2_ws/build/drone_control/build/lib/drone_control
+[0.336s] running install
+[0.336s] running install_lib
+[0.336s] copying /home/utsubo/research/drone/ros2_ws/build/drone_control/build/lib/drone_control/position_controller.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control
+[0.336s] copying /home/utsubo/research/drone/ros2_ws/build/drone_control/build/lib/drone_control/keyboard_teleop.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control
+[0.336s] byte-compiling /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control/position_controller.py to position_controller.cpython-310.pyc
+[0.337s] byte-compiling /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control/keyboard_teleop.py to keyboard_teleop.cpython-310.pyc
+[0.338s] running install_data
+[0.338s] copying package.xml -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control
+[0.338s] copying launch/bringup_real.launch.py -> /home/utsubo/research/drone/ros2_ws/install/drone_control/share/drone_control/launch
+[0.338s] running install_egg_info
+[0.339s] removing '/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info' (and everything under it)
+[0.339s] Copying ../../build/drone_control/drone_control.egg-info to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.1-py3.10.egg-info
+[0.339s] running install_scripts
+[0.348s] Installing keyboard_teleop script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.348s] Installing pose_bridge script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.348s] Installing position_controller script to /home/utsubo/research/drone/ros2_ws/install/drone_control/lib/drone_control
+[0.348s] writing list of installed files to '/home/utsubo/research/drone/ros2_ws/build/drone_control/install.log'
+[0.357s] Invoked command in '/home/utsubo/research/drone/ros2_ws/src/drone_control' returned '0': PYTHONPATH=/home/utsubo/research/drone/ros2_ws/build/drone_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/utsubo/research/drone/ros2_ws/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /home/utsubo/research/drone/ros2_ws/build/drone_control/build install --record /home/utsubo/research/drone/ros2_ws/build/drone_control/install.log --single-version-externally-managed install_data

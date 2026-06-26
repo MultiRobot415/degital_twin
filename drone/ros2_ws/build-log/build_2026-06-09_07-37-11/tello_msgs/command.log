@@ -1,0 +1,4 @@
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_msgs -- -j32 -l32
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/utsubo/research/drone/ros2_ws/build/tello_msgs -- -j32 -l32
+Invoking command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/tello_msgs
+Invoked command in '/home/utsubo/research/drone/ros2_ws/build/tello_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/utsubo/research/drone/ros2_ws/build/tello_msgs

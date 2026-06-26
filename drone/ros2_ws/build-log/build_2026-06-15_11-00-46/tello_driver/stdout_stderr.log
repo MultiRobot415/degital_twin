@@ -1,0 +1,76 @@
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found camera_calibration_parsers: 3.1.12 (/opt/ros/humble/share/camera_calibration_parsers/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found class_loader: 2.2.0 (/opt/ros/humble/share/class_loader/cmake)
+-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)
+-- Found rclcpp_components: 16.0.19 (/opt/ros/humble/share/rclcpp_components/cmake)
+-- Found ros2_shared: 0.1.0 (/home/utsubo/research/drone/ros2_ws/install/ros2_shared/share/ros2_shared/cmake)
+-- Found tello_msgs: 0.1.0 (/home/utsubo/research/drone/ros2_ws/install/tello_msgs/share/tello_msgs/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/utsubo/research/drone/ros2_ws/build/tello_driver
+Consolidate compiler generated dependencies of target tello_emulator
+Consolidate compiler generated dependencies of target tello_joy_node
+Consolidate compiler generated dependencies of target tello_joy_main
+Consolidate compiler generated dependencies of target tello_driver_node
+Consolidate compiler generated dependencies of target tello_driver_main
+[  4%] Building CXX object CMakeFiles/tello_joy_node.dir/src/tello_joy_node.cpp.o
+[  9%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_main.cpp.o
+[ 13%] Building CXX object CMakeFiles/tello_joy_main.dir/src/tello_joy_node.cpp.o
+[ 22%] Built target tello_emulator
+[ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/command_socket.cpp.o
+[ 31%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_socket.cpp.o
+[ 36%] Building CXX object CMakeFiles/tello_driver_node.dir/src/command_socket.cpp.o
+[ 40%] Building CXX object CMakeFiles/tello_driver_main.dir/src/state_socket.cpp.o
+[ 45%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_main.cpp.o
+[ 50%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_driver_node.cpp.o
+[ 54%] Building CXX object CMakeFiles/tello_driver_main.dir/src/tello_driver_node.cpp.o
+[ 59%] Building CXX object CMakeFiles/tello_driver_node.dir/src/tello_socket.cpp.o
+[ 63%] Building CXX object CMakeFiles/tello_driver_main.dir/src/video_socket.cpp.o
+[ 68%] Building CXX object CMakeFiles/tello_driver_node.dir/src/state_socket.cpp.o
+[ 72%] Building CXX object CMakeFiles/tello_driver_node.dir/src/video_socket.cpp.o
+[ 77%] Linking CXX shared library libtello_joy_node.so
+[ 81%] Linking CXX executable tello_joy_main
+[ 81%] Built target tello_joy_node
+[ 81%] Built target tello_joy_main
+[ 86%] Linking CXX executable tello_driver_main
+[ 90%] Built target tello_driver_main
+[ 95%] Linking CXX shared library libtello_driver_node.so
+[100%] Built target tello_driver_node
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/library_path.sh
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/library_path.dsv
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_driver_node.so
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/libtello_joy_node.so
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_driver_main
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_joy_main
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/lib/tello_driver/tello_emulator
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cfg/camera_info.yaml
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/emulator_launch.py
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/emulators_launch.py
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/launch/teleop_launch.py
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/package_run_dependencies/tello_driver
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/parent_prefix_path/tello_driver
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/ament_prefix_path.sh
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/ament_prefix_path.dsv
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/path.sh
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/environment/path.dsv
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.bash
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.sh
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.zsh
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/local_setup.dsv
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/package.dsv
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/packages/tello_driver
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/ament_index/resource_index/rclcpp_components/tello_driver
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cmake/tello_driverConfig.cmake
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/cmake/tello_driverConfig-version.cmake
+-- Symlinking: /home/utsubo/research/drone/ros2_ws/install/tello_driver/share/tello_driver/package.xml
