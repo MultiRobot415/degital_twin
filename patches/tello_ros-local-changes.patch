@@ -1,0 +1,163 @@
+diff --git a/tello_driver/CMakeLists.txt b/tello_driver/CMakeLists.txt
+index 4d7b8bd..af6a36e 100644
+--- a/tello_driver/CMakeLists.txt
++++ b/tello_driver/CMakeLists.txt
+@@ -72,6 +72,7 @@ set(DRIVER_NODE_DEPS
+   geometry_msgs
+   OpenCV
+   rclcpp
++  rclcpp_components
+   ros2_shared
+   sensor_msgs
+   std_msgs
+@@ -126,6 +127,7 @@ set(JOY_NODE_DEPS
+   class_loader
+   geometry_msgs
+   rclcpp
++  rclcpp_components
+   sensor_msgs
+   tello_msgs)
+ 
+diff --git a/tello_driver/include/tello_driver_node.hpp b/tello_driver/include/tello_driver_node.hpp
+index 2d21f4d..e582be8 100644
+--- a/tello_driver/include/tello_driver_node.hpp
++++ b/tello_driver/include/tello_driver_node.hpp
+@@ -75,6 +75,15 @@ namespace tello_driver
+ 
+     // ROS timer
+     rclcpp::TimerBase::SharedPtr spin_timer_;
++
++    // Startup handshake state.
++    // data_port_/video_port_ are where WE listen; the drone streams to its own defaults
++    // (8890/11111) unless we tell it otherwise with the SDK "port" command. To run several
++    // Tellos on one host we offset these ports, so we must redirect each drone once at startup.
++    int data_port_ = 8890;
++    int video_port_ = 11111;
++    bool command_sent_ = false;   // "command" (enter SDK mode) has been issued
++    bool port_sent_ = false;      // "port <data> <video>" redirect has been issued
+   };
+ 
+   //=====================================================================================
+diff --git a/tello_driver/src/tello_driver_node.cpp b/tello_driver/src/tello_driver_node.cpp
+index 2bd843a..05fd24a 100644
+--- a/tello_driver/src/tello_driver_node.cpp
++++ b/tello_driver/src/tello_driver_node.cpp
+@@ -26,6 +26,15 @@ namespace tello_driver
+   CXT_MACRO_MEMBER(               /* Camera calibration path */ \
+   camera_info_path, \
+   std::string, "install/tello_driver/share/tello_driver/cfg/camera_info.yaml") \
++  CXT_MACRO_MEMBER(               /* Receive+decode the camera stream. Set false to skip \
++                                     "streamon" entirely: no VideoSocket, no h264 decode, \
++                                     no cv::imshow window, and no video UDP traffic. \
++                                     Multi-drone runs that only need /cmd_vel should turn \
++                                     this off -- 3 video streams on one WiFi cause packet \
++                                     loss (the "error decoding frame" / "concealing N DC..." \
++                                     spam) and steal bandwidth from the command channel. */ \
++  enable_video, \
++  bool, true) \
+   /* End of list */
+ 
+   struct TelloDriverContext
+@@ -74,12 +83,25 @@ namespace tello_driver
+     RCLCPP_INFO(get_logger(), "Drone at %s:%d", cxt.drone_ip_.c_str(), cxt.drone_port_);
+     RCLCPP_INFO(get_logger(), "Listening for command responses on localhost:%d", cxt.command_port_);
+     RCLCPP_INFO(get_logger(), "Listening for data on localhost:%d", cxt.data_port_);
+-    RCLCPP_INFO(get_logger(), "Listening for video on localhost:%d", cxt.video_port_);
++    if (cxt.enable_video_) {
++      RCLCPP_INFO(get_logger(), "Listening for video on localhost:%d", cxt.video_port_);
++    } else {
++      RCLCPP_INFO(get_logger(), "Video DISABLED (enable_video=false): no streamon/decode");
++    }
++
++    // Remember our listening ports so the startup handshake can redirect the drone's
++    // state/video streams here (see timer_callback).
++    data_port_ = cxt.data_port_;
++    video_port_ = cxt.video_port_;
+ 
+     // Sockets
+     command_socket_ = std::make_unique<CommandSocket>(this, cxt.drone_ip_, cxt.drone_port_, cxt.command_port_);
+     state_socket_ = std::make_unique<StateSocket>(this, cxt.data_port_);
+-    video_socket_ = std::make_unique<VideoSocket>(this, cxt.video_port_, cxt.camera_info_path_);
++    // enable_video=false なら VideoSocket を作らない。以降 video_socket_ は nullptr で、
++    // 「映像は関係なし」＝接続判定・keep-alive を通し、streamon とタイムアウトは飛ばす。
++    if (cxt.enable_video_) {
++      video_socket_ = std::make_unique<VideoSocket>(this, cxt.video_port_, cxt.camera_info_path_);
++    }
+   }
+ 
+   TelloDriverNode::~TelloDriverNode()
+@@ -92,7 +114,7 @@ namespace tello_driver
+     std::shared_ptr<tello_msgs::srv::TelloAction::Response> response)
+   {
+     (void) request_header;
+-    if (!state_socket_->receiving() || !video_socket_->receiving()) {
++    if (!state_socket_->receiving() || (video_socket_ && !video_socket_->receiving())) {
+       RCLCPP_WARN(get_logger(), "Not connected, dropping '%s'", request->cmd.c_str());
+       response->rc = response->ERROR_NOT_CONNECTED;
+     } else if (command_socket_->waiting()) {
+@@ -124,14 +146,40 @@ namespace tello_driver
+     // Startup
+     //====
+ 
+-    if (!state_socket_->receiving() && !command_socket_->waiting()) {
+-      // First command to the drone must be "command"
+-      command_socket_->initiate_command("command", false);
++    if (!state_socket_->receiving()) {
++      // Not connected yet: run the handshake (command -> port) before any state arrives.
++      // Don't step on an in-flight command; wait for its response (or timeout) first.
++      if (command_socket_->waiting()) {
++        return;
++      }
++
++      if (!command_sent_) {
++        // First command to the drone must be "command" (enter SDK mode)
++        command_socket_->initiate_command("command", false);
++        command_sent_ = true;
++        return;
++      }
++
++      if (!port_sent_) {
++        // Redirect the drone's state/video streams to OUR listening ports. This is what
++        // lets multiple Tellos share one host; for a single drone on default ports
++        // (8890/11111) it's a harmless no-op. Must happen before we can receive state.
++        std::ostringstream port_cmd;
++        port_cmd << "port " << data_port_ << " " << video_port_;
++        command_socket_->initiate_command(port_cmd.str(), false);
++        port_sent_ = true;
++        return;
++      }
++
++      // Sent both but still no state (e.g. a packet was lost): retry the whole handshake.
++      command_sent_ = false;
++      port_sent_ = false;
+       return;
+     }
+ 
+-    if (state_socket_->receiving() && !video_socket_->receiving() && !command_socket_->waiting()) {
+-      // Start video
++    if (state_socket_->receiving() && video_socket_ && !video_socket_->receiving() &&
++        !command_socket_->waiting()) {
++      // Start video（enable_video=false のときは video_socket_ が無いので送らない）
+       command_socket_->initiate_command("streamon", false);
+       return;
+     }
+@@ -154,7 +202,8 @@ namespace tello_driver
+       timeout = true;
+     }
+ 
+-    if (video_socket_->receiving() && now() - video_socket_->receive_time() > rclcpp::Duration(VIDEO_TIMEOUT, 0)) {
++    if (video_socket_ && video_socket_->receiving() &&
++        now() - video_socket_->receive_time() > rclcpp::Duration(VIDEO_TIMEOUT, 0)) {
+       RCLCPP_ERROR(get_logger(), "No video received for 5s");
+       video_socket_->timeout();
+       timeout = true;
+@@ -168,7 +217,8 @@ namespace tello_driver
+     // Keep-alive, drone will auto-land if it hears nothing for 15s
+     //====
+ 
+-    if (state_socket_->receiving() && video_socket_->receiving() && !command_socket_->waiting() &&
++    if (state_socket_->receiving() && (!video_socket_ || video_socket_->receiving()) &&
++        !command_socket_->waiting() &&
+         now() - command_socket_->send_time() > rclcpp::Duration(KEEP_ALIVE, 0)) {
+       command_socket_->initiate_command("rc 0 0 0 0", false);
+       return;

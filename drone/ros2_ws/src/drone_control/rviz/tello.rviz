@@ -25,6 +25,19 @@ Visualization Manager:
         Reliability Policy: Reliable
       Shape: Arrow
       Color: 0; 170; 255
+    # 障害物マーカー（1機ぶんだけ表示＝三重描画による乱立を防ぐ）。
+    # tello1 の obstacle_bridge が見ている集合＝「他機(tello2,3)＋静止障害物ID4,ID5」。
+    # 静止障害物ID4/5は全機共通なので、この1つで両方見える。
+    # 赤シリンダー=本体半径(static_obstacle_radius), 薄ピンク=安全境界(半径+robot_radius)。
+    # latched QoS に合わせ Durability=Transient Local。
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Obstacles (tello1 view)
+      Enabled: true
+      Topic:
+        Value: /tello1/shield/obstacles
+        Depth: 5
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
   Tools:
     - Class: rviz_default_plugins/MoveCamera
     - Class: rviz_default_plugins/Select

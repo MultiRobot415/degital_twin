@@ -28,6 +28,7 @@ setup(
             # `ros2 run drone_control <名前>` で起動できる
             "position_controller = drone_control.position_controller:main",
             "keyboard_teleop = drone_control.keyboard_teleop:main",
+            "multiagent_teleop = drone_control.multiagent_teleop:main",
             "pose_bridge = drone_control.pose_bridge:main",
             "obstacle_bridge = drone_control.obstacle_bridge:main",
         ],

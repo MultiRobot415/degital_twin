@@ -55,7 +55,7 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSHistoryPolicy
-from geometry_msgs.msg import Twist, PoseStamped
+from geometry_msgs.msg import Twist, PoseStamped, Point
 from nav_msgs.msg import Path
 from visualization_msgs.msg import Marker, MarkerArray
 
@@ -96,6 +96,25 @@ class ShieldFilterNode(Node):
         # shield_multi 用：LSEスムースminの鋭さ beta と分散補正の精緻化フラグ
         self.declare_parameter("beta", 1.0)          # 大きいほど min に近い（鋭い）
         self.declare_parameter("use_refined", True)  # True=Thm5.2 / False=Prop5.1(保守的)
+        # --- QP スラック変数（デッドロックでも入力を出す）---
+        # CBF制約 a^T u >= b を a^T u >= b - s に緩め、コストへ w*s^2 を足す。
+        # 硬い制約のままだと必要な |u| が u_max を超えた瞬間に clip で“黙って違反”し、
+        # かつ u の全予算が退避方向に食われてゴール方向成分が消える＝デッドロック。
+        # w を有限にすると緩みが最小限で明示的になり、進行方向の予算が残る。
+        #   目安: 100以上≒ほぼ硬い / 10前後=デッドロックが解ける / 1=かなり緩い
+        #   <0 で無効＝従来どおりの硬い制約（既定）
+        self.declare_parameter("slack_weight", -1.0)
+        # 緩めていい上限[m/s]（s <= slack_max）。<0 で無制限。安全側の歯止め。
+        self.declare_parameter("slack_max", -1.0)
+        # --- 会場境界の壁（領域外＝mocap範囲外に出さない）---
+        # 壁は「巨大円の障害物」で近似して既存の h_hat_multi / LSE smooth-min に相乗りする
+        # （barrier.py に半平面バリアを足さないので凹性の前提もそのまま）。
+        self.declare_parameter("wall_enable", False)
+        # [x_min, x_max, y_min, y_max][m]。機体“中心”は各辺から robot_radius 内側までに制限。
+        self.declare_parameter("wall_bounds", [-1.0, 1.0, -1.0, 1.0])
+        # 壁を近似する円の半径[m]。大きいほど直線に近い（会場端での誤差 ~ 半幅^2/(2R)）。
+        # 実測（会場±1m, robot_r=0.10）: R=10m→49mm, R=50m→10mm, R=200m→2.5mm。
+        self.declare_parameter("wall_arc_radius", 200.0)
         self.declare_parameter("pass_through_z", True)   # 高さ指令を素通し
         self.declare_parameter("pass_through_yaw", True)  # 旋回指令を素通し
         self.declare_parameter("world_frame", "world")    # マーカーの座標系（/tello/pose と同じ）
@@ -138,10 +157,24 @@ class ShieldFilterNode(Node):
                 list(self.get_parameter("obstacles").value)
             )
 
+        # 会場境界の壁（mocap 由来の障害物とは別に持つ。マーカーは箱として描く）
+        self.wall_enable = bool(self.get_parameter("wall_enable").value)
+        self.wall_bounds = [float(v) for v in self.get_parameter("wall_bounds").value]
+        if len(self.wall_bounds) != 4:
+            raise ValueError(
+                f"wall_bounds は [x_min, x_max, y_min, y_max] の4要素: {self.wall_bounds}")
+        self.wall_arc_radius = float(self.get_parameter("wall_arc_radius").value)
+        self.walls = self._build_walls() if self.wall_enable else []
+
         barrier = BarrierFunction(lam=float(self.get_parameter("lam").value),
                                   gamma=float(self.get_parameter("gamma").value))
         u_max = float(self.get_parameter("u_max").value)
         fa = float(self.get_parameter("fixed_alpha").value)
+        # スラック：負値は「無効」を表すセンチネル。None を渡すと従来の硬い制約になる。
+        sw = float(self.get_parameter("slack_weight").value)
+        sm = float(self.get_parameter("slack_max").value)
+        self.slack_weight = sw if sw >= 0.0 else None
+        self.slack_max = sm if sm >= 0.0 else float("inf")
         self._info = ""
 
         if self.mode in ("shield", "shield_multi"):
@@ -166,6 +199,7 @@ class ShieldFilterNode(Node):
                     n_samples=int(self.get_parameter("n_samples").value),
                     fixed_alpha=(fa if fa >= 0.0 else None),
                     use_refined=bool(self.get_parameter("use_refined").value),
+                    slack_weight=self.slack_weight, slack_max=self.slack_max,
                 )
                 self._info = (f"SHIELD-Multi(CVAE) alpha={alpha_lbl} "
                               f"beta={self.get_parameter('beta').value}")
@@ -179,6 +213,7 @@ class ShieldFilterNode(Node):
                     dt=self.dt, u_max=u_max,
                     n_samples=int(self.get_parameter("n_samples").value),
                     fixed_alpha=(fa if fa >= 0.0 else None),
+                    slack_weight=self.slack_weight, slack_max=self.slack_max,
                 )
                 self._info = f"SHIELD(CVAE) alpha={alpha_lbl}"
         else:
@@ -187,6 +222,7 @@ class ShieldFilterNode(Node):
                 barrier=barrier,
                 alpha=(fa if fa >= 0.0 else 0.9),
                 dt=self.dt, u_max=u_max,
+                slack_weight=self.slack_weight, slack_max=self.slack_max,
             )
             self._info = f"NominalCBF(d=0) alpha={(fa if fa >= 0 else 0.9):.2f}"
 
@@ -231,24 +267,102 @@ class ShieldFilterNode(Node):
         self.log_root = self.get_parameter("log_root").value
         self._t0 = time.perf_counter()
         self._rec = {k: [] for k in
-                     ("t", "px", "py", "yaw", "unom", "usafe", "h", "sdf", "alpha")}
+                     ("t", "px", "py", "yaw", "unom", "usafe", "h", "sdf", "alpha",
+                      "slack")}
+        self._slack_steps = 0      # スラックが効いた（s>0）ステップ数
+        self._slack_peak = 0.0     # そのピーク[m/s]
 
         obs_str = ", ".join(f"({o.position[0]:.2f},{o.position[1]:.2f},r={o.radius:.2f})"
                             for o in self.obstacles)
+        slack_str = ("硬い制約(slack無効)" if self.slack_weight is None else
+                     f"slack w={self.slack_weight:g} max="
+                     f"{'inf' if self.slack_max == float('inf') else f'{self.slack_max:g}'}")
+        if self.wall_enable:
+            xn, xp, yn, yp = self.wall_bounds
+            wall_str = (f"壁 x∈[{xn:+.2f},{xp:+.2f}] y∈[{yn:+.2f},{yp:+.2f}] "
+                        f"(機体中心の限界は各辺 -{self.robot_radius:.2f}m, arc_R="
+                        f"{self.wall_arc_radius:g}m)")
+        else:
+            wall_str = "壁なし"
         self.get_logger().info(
             f"shield_filter_node up [{self._info}]. dt={self.dt:.3f} "
             f"robot_r={self.robot_radius} u_max={self.filter.u_max} | "
-            f"obstacles=[{obs_str}] | sub:/tello/pose,/cmd_vel_nom pub:/cmd_vel"
+            f"obstacles=[{obs_str}] | {wall_str} | {slack_str} | "
+            f"sub:/tello/pose,/cmd_vel_nom pub:/cmd_vel"
         )
 
+    def _build_walls(self):
+        """会場境界の4辺を「巨大円の障害物」として作る（半平面バリアの近似）。
+
+        なぜ円で近似するか:
+            barrier.py に半平面バリアを新設せず、既存の h_hat / h_hat_multi・LSE
+            smooth-min・Prop4.2の凹性・Thm5.2の分散補正の経路にそのまま相乗りできる。
+            壁 x = x_max は「中心 (x_max + Rw, 0)・半径 Rw の円」で近似する:
+                h = |p - c| - Rw - robot_r ≈ (x_max - px) - robot_r      (Rw >> 会場半幅)
+            つまり機体中心は x <= x_max - robot_r に保たれる。
+            円弧のふくらみによる誤差は会場端で ~ (半幅)^2 / (2 Rw)
+            （Rw=50m・半幅1m なら約1cm。h を過大評価＝わずかに甘い側）。
+
+        注意（LSE smooth-min のバイアス）:
+            h_hat_multi は障害物 N 個が同程度の h のとき min より log(N)/beta だけ
+            低く出る。壁4枚を足すと N が 4 増えるので b の要求 |u| が上がり、u_max が
+            小さいと制約を満たせなくなる。beta を上げる（例 1.0→3〜4）と log(N)/beta が
+            縮んで解消する。lambda_max_multi=lam*gamma^2*(1+beta*lam) 経由で分散補正が
+            増えるが、ここでは dt^2 が掛かるので実質無視できる大きさ。
+        """
+        x_min, x_max, y_min, y_max = self.wall_bounds
+        Rw = self.wall_arc_radius
+        specs = [
+            (np.array([x_max + Rw, 0.0]),),   # x = x_max の壁
+            (np.array([x_min - Rw, 0.0]),),   # x = x_min の壁
+            (np.array([0.0, y_max + Rw]),),   # y = y_max の壁
+            (np.array([0.0, y_min - Rw]),),   # y = y_min の壁
+        ]
+        return [self._Obstacle(position=c, radius=Rw) for (c,) in specs]
+
+    def _all_obstacles(self):
+        """フィルタ・バリア評価に渡す障害物（mocap由来 + 会場境界の壁）。"""
+        return self.obstacles + self.walls
+
+    def _arena_markers(self):
+        """会場境界（実線）と機体中心の限界（内側の細線）を RViz に出す。"""
+        if not self.wall_enable:
+            return []
+        x_min, x_max, y_min, y_max = self.wall_bounds
+        r = self.robot_radius
+        out = []
+        for i, (box, width, rgba) in enumerate((
+            ((x_min, x_max, y_min, y_max), 0.02, (0.35, 0.35, 0.35, 0.9)),
+            ((x_min + r, x_max - r, y_min + r, y_max - r), 0.01, (1.0, 0.4, 0.7, 0.5)),
+        )):
+            xn, xp, yn, yp = box
+            m = Marker()
+            m.header.frame_id = self.world_frame
+            m.ns = "arena"
+            m.id = i
+            m.type = Marker.LINE_STRIP
+            m.action = Marker.ADD
+            m.pose.orientation.w = 1.0
+            m.scale.x = width
+            m.color.r, m.color.g, m.color.b, m.color.a = rgba
+            z = self.marker_height / 2.0
+            for x, y in ((xn, yn), (xp, yn), (xp, yp), (xn, yp), (xn, yn)):
+                m.points.append(Point(x=float(x), y=float(y), z=float(z)))
+            out.append(m)
+        return out
+
     def _publish_markers(self):
-        """障害物本体（赤）と安全境界 R_total=obs_r+robot_r（薄ピンク）を RViz に出す。"""
+        """障害物本体（赤）と安全境界 R_total=obs_r+robot_r（薄ピンク）を RViz に出す。
+
+        壁は巨大円なので円柱では描かず、_arena_markers() が箱の線として描く。
+        """
         arr = MarkerArray()
         if not self.obstacles:
             # 障害物が無い（mocap 受信前など）→ DELETEALL で既存マーカーを消す
             clear = Marker()
             clear.action = Marker.DELETEALL
             arr.markers.append(clear)
+            arr.markers.extend(self._arena_markers())  # 会場の箱は出しておく
             self.marker_pub.publish(arr)
             return
         h = self.marker_height
@@ -280,6 +394,7 @@ class ShieldFilterNode(Node):
             mm.scale.z = h * 0.98
             mm.color.r, mm.color.g, mm.color.b, mm.color.a = 1.0, 0.4, 0.7, 0.2
             arr.markers.append(mm)
+        arr.markers.extend(self._arena_markers())
         self.marker_pub.publish(arr)
 
     # ---- body正規化指令 → world 速度[m/s]（収集と同じ規約）----
@@ -334,18 +449,31 @@ class ShieldFilterNode(Node):
         # 生指令(body) → world 速度（xy）。z/旋回は後で素通し用に保持
         u_nom_world = self._body_to_world(self.u_nom_body[0], self.u_nom_body[1])
 
+        # mocap 由来の障害物 + 会場境界の壁。壁は wall_enable=false なら空リスト。
+        obs_all = self._all_obstacles()
+
         if self.mode in ("shield", "shield_multi"):
             # CVAE 文脈（直近 context_len の (x, u_nom_world)）を渡す。トラッキング補正あり。
             ctx_xs = np.array(self.ctx_x, dtype=np.float32)
             ctx_us = np.array(self.ctx_u, dtype=np.float32)
             u_safe_world = self.filter.filter(
-                self.pos, u_nom_world, self.obstacles, self.robot_radius, ctx_xs, ctx_us
+                self.pos, u_nom_world, obs_all, self.robot_radius, ctx_xs, ctx_us
             )
         else:
             # 素のCBF：文脈なし・補正なし（d=0）。無入力なら u_safe=0。
             u_safe_world = self.filter.filter(
-                self.pos, u_nom_world, self.obstacles, self.robot_radius
+                self.pos, u_nom_world, obs_all, self.robot_radius
             )
+
+        # 実際に使われたスラック[m/s]。>0 は「このステップは CBF の減衰条件を満たせず
+        # 緩めた（＝安全余裕を削って進んだ）」の意味。slack 無効時も clip 違反を拾う。
+        slack = float(getattr(self.filter, "last_slack", 0.0))
+        if slack > 1e-9:
+            self._slack_steps += 1
+            self._slack_peak = max(self._slack_peak, slack)
+            self.get_logger().warn(
+                f"スラック作動 s={slack:.3f} m/s（累計 {self._slack_steps} steps, "
+                f"ピーク {self._slack_peak:.3f}）", throttle_duration_sec=2.0)
 
         # world → body 正規化して publish
         bx, by = self._world_to_body(u_safe_world[0], u_safe_world[1])
@@ -385,14 +513,16 @@ class ShieldFilterNode(Node):
             r["usafe"].append(np.array(u_safe_world, dtype=float))
             r["h"].append(h); r["sdf"].append(sdf)
             r["alpha"].append(float(getattr(self.filter, "_alpha", np.nan)))
+            r["slack"].append(slack)
 
     def _barrier_state(self, pos):
-        """最近傍障害物について h_smooth と sdf を返す（記録・可視化用）。"""
-        if not self.obstacles:
+        """最近傍障害物について h_smooth と sdf を返す（記録・可視化用。壁も含む）。"""
+        obs_all = self._all_obstacles()
+        if not obs_all:
             return float("nan"), float("inf")
         b = self.filter.barrier
         best_sdf, best_h = float("inf"), float("nan")
-        for obs in self.obstacles:
+        for obs in obs_all:
             R = obs.radius + self.robot_radius
             s = b.sdf(pos, obs.position, R)
             if s < best_sdf:
@@ -407,7 +537,11 @@ class ShieldFilterNode(Node):
         now = datetime.now()
         out_dir = os.path.join(self.log_root, "traj", now.strftime("%Y-%m-%d"))
         os.makedirs(out_dir, exist_ok=True)
-        out = os.path.join(out_dir, f"{now.strftime('%H%M%S')}_{self.mode}.npz")
+        # 機体名(ノード名)をファイル名に入れる：マルチエージェントで2機が同じ秒に
+        # 終了しても上書きしない（既定ノード名 shield_filter_node のときは付けない）。
+        node_name = self.get_name()
+        tag = "" if node_name in ("shield_filter_node", "") else f"_{node_name}"
+        out = os.path.join(out_dir, f"{now.strftime('%H%M%S')}{tag}_{self.mode}.npz")
         r = self._rec
         np.savez(
             out,
@@ -419,14 +553,20 @@ class ShieldFilterNode(Node):
             h=np.array(r["h"]),
             sdf=np.array(r["sdf"]),
             alpha=np.array(r["alpha"]),
+            slack=np.array(r["slack"]),
             obstacles=np.array([[o.position[0], o.position[1], o.radius]
                                 for o in self.obstacles]),
+            wall_bounds=np.array(self.wall_bounds if self.wall_enable else []),
+            slack_weight=(np.nan if self.slack_weight is None else self.slack_weight),
             robot_radius=float(self.robot_radius),
             mode=self.mode,
         )
         n_unsafe = int(np.sum(np.array(r["sdf"]) < 0))
+        sl = np.array(r["slack"])
         self.get_logger().info(
-            f"記録保存: {out}  (N={len(r['t'])} steps, sdf<0 が {n_unsafe} steps)"
+            f"記録保存: {out}  (N={len(r['t'])} steps, sdf<0 が {n_unsafe} steps, "
+            f"slack>0 が {int(np.sum(sl > 1e-9))} steps / ピーク "
+            f"{(float(np.max(sl)) if sl.size else 0.0):.3f} m/s)"
         )
         return out
 
