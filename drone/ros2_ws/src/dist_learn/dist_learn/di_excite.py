@@ -11,11 +11,16 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
                        /tello/pose ──────┘ 計測中は自動の指令（高さは teleop のまま）
 
 ■ 自動で流す動き（既定。--amps で加速度の大きさを変えられる）
-  加速度 a = 0.5, 1.0, 2.0 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
+  加速度 a = 0.5, 1.0, 1.3 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
       その場で静止（1.5 s） → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
-  T は移動量 a T^2 が --disp（既定 0.15 m）になるよう決める。エリア 1.4 m 四方の中央から始めること
-  （模擬では開始位置から最大 0.31 m。機体の半径 0.15 m を足しても壁まで余裕がある）。最後にヨー角速度 ±0.5, ±1.0（正規化）を
-  2 秒ずつ（その間、位置はその場に保つ）。全体でおよそ 50 秒。
+  T は移動量 a T^2 が --disp（既定 0.15 m）になるよう決める。最後にヨー角速度 ±0.5, ±1.0
+  （正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体でおよそ 50 秒。
+  エリア 1.4 m 四方の中央から始めること。Tello の遅れのモデル（tau, g は 10/15 の実測）で模擬すると、
+  開始位置から最大 0.32 m（機体の半径 0.15 m を足しても壁まで 0.2 m 余る）。
+  既定の組（a ≤ 1.3、速度指令の上限 --v-cmd-max 1.0 = スティック全開）では、模擬で指令が上限に
+  当たるステップは 0。a = 1.5 で 1 割、2.0 ではほぼ全部が当たる（全開でも、止まった状態から約 2.3、
+  0.5 m/s 出ていると約 1.5 m/s^2 しか出ない）。実機の g が 1.5 より小さいと当たりうるが、
+  当たったかは記録の cmd が ±1.0 かで分かる。
   加速度は、Tello が速度指令 c に v' = (g c - v)/tau で追従し、指令は dt の間一定とみて
   c = v/g + dt u / ((1 - exp(-dt/tau)) g) に直して送る（dt が tau より十分小さければ
   c ≈ (v + (tau + dt/2) u)/g。--no-zoh で連続時間の式 c = (v + tau u)/g）。
@@ -48,9 +53,6 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
   速度は 120 Hz の生の位置の隣どうしの差分で作らないこと。位置のノイズ 0.3 mm が ×120 されて
   1点あたり数 cm/s の揺れになり、d がそれで埋もれる（模擬で確認：差分 5 cm/s → 0.1 s の直線あてはめ
   1.5 cm/s）。各時刻の前後 0.05 s（計 0.1 s）の位置に直線をあてはめた傾きを使う。
-  注意：--v-cmd-max 0.6 のままだと a = 2.0 の区間はほぼ全部、a = 1.0 も半分ほど指令が上限で
-  切られる（加速度が出し切れない。切られたかは cmd が ±0.6 かで分かる）。広さに余裕があれば
-  --v-cmd-max 1.0 にする。
 """
 
 from __future__ import annotations
@@ -248,13 +250,13 @@ class DIExcite(Node):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rate", type=float, default=20.0)
-    ap.add_argument("--amps", type=float, nargs="+", default=[0.5, 1.0, 2.0])
+    ap.add_argument("--amps", type=float, nargs="+", default=[0.5, 1.0, 1.3])
     ap.add_argument("--tau-x", type=float, default=0.65)
     ap.add_argument("--tau-y", type=float, default=0.74)
     ap.add_argument("--g-x", type=float, default=1.48)
     ap.add_argument("--g-y", type=float, default=1.52)
     ap.add_argument("--max-vxy", type=float, default=1.0)
-    ap.add_argument("--v-cmd-max", type=float, default=0.6)
+    ap.add_argument("--v-cmd-max", type=float, default=1.0)
     ap.add_argument("--kp-hold", type=float, default=0.8)
     ap.add_argument("--kp-yaw", type=float, default=1.0)
     ap.add_argument("--window", type=float, default=0.05)
@@ -262,7 +264,7 @@ def main():
                     help="連続時間の式 c = (v + tau u)/g を使う（比較用）")
     ap.add_argument("--fence", type=float, default=0.45)
     ap.add_argument("--disp", type=float, default=0.15,
-                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（1.4 m 四方のエリアの中央から始めて，模擬で最大 0.31 m）")
+                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（1.4 m 四方のエリアの中央から始めて，模擬で最大 0.32 m）")
     ap.add_argument("--log-root", default=os.path.expanduser("~/research/drone/ros2_ws/log"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
