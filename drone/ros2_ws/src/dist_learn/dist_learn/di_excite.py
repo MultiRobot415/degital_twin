@@ -12,15 +12,19 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
 
 ■ 自動で流す動き（既定。--amps で加速度の大きさを変えられる）
   加速度 a = 0.5, 1.0, 1.3 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
-      その場で静止（1.5 s） → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
-  T は移動量 a T^2 が --disp（既定 0.15 m）になるよう決める。最後にヨー角速度 ±0.5, ±1.0
-  （正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体でおよそ 50 秒。
-  エリア 1.4 m 四方の中央から始めること。Tello の遅れのモデル（tau, g は 10/15 の実測）で模擬すると、
-  開始位置から最大 0.32 m（機体の半径 0.15 m を足しても壁まで 0.2 m 余る）。
-  既定の組（a ≤ 1.3、速度指令の上限 --v-cmd-max 1.0 = スティック全開）では、模擬で指令が上限に
-  当たるステップは 0。a = 1.5 で 1 割、2.0 ではほぼ全部が当たる（全開でも、止まった状態から約 2.3、
-  0.5 m/s 出ていると約 1.5 m/s^2 しか出ない）。実機の g が 1.5 より小さいと当たりうるが、
-  当たったかは記録の cmd が ±1.0 かで分かる。
+      静止 → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
+  静止の区間は、1 秒たち、かつ開始位置から 5 cm 以内・速さ 5 cm/s 以下に戻ったら終わる（最長 6 秒）。
+  次の加速を必ず静止から始めるため（時間で打ち切ると速度が積み重なって大きく行き過ぎる）。
+  T は移動量 a T^2 が --disp（既定 0.5 m）になるよう決め、--t-max（既定 1.0 s）で頭打ち。さらに、
+  加速の終わりの速度指令 (a T + tau a)/g がスティック全開（--v-cmd-max 1.0）の 9 割を超えないよう
+  T を縮める（超えると加速が切られ、減速で行き過ぎる）。既定では
+      a = 0.5: T = 1.00 s, 移動 0.50 m / a = 1.0: T = 0.59 s, 0.35 m / a = 1.3: T = 0.28 s, 0.11 m
+  最後にヨー角速度 ±0.5, ±1.0（正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体で約 1 分。
+  エリア（端まで約 0.9 m）の中央から始めること。中央から 0.7 m に届く程度を狙っている。
+  模擬では、遅れのない Tello（tau, g は 10/15 の値）で開始位置から最大 0.57 m、10/15 17:34 の実測に
+  当てはめた遅れのある Tello（むだ時間 0.2 s・2次遅れ・g = 0.9）で 0.26 m。どちらも指令が上限に
+  当たるステップは 0。17:34 の実機は予定の移動量の約 1.4 倍動いたので、a = 0.5 の区間で 0.7 m 前後。
+  --fence（既定 0.8 m）を超えたらその場で止まる。
   加速度は、Tello が速度指令 c に v' = (g c - v)/tau で追従し、指令は dt の間一定とみて
   c = v/g + dt u / ((1 - exp(-dt/tau)) g) に直して送る（dt が tau より十分小さければ
   c ≈ (v + (tau + dt/2) u)/g。--no-zoh で連続時間の式 c = (v + tau u)/g）。
@@ -76,19 +80,30 @@ def yaw_from_quat(qx, qy, qz, qw) -> float:
     return math.atan2(2.0 * (qw * qz + qx * qy), 1.0 - 2.0 * (qy * qy + qz * qz))
 
 
-def build_program(amps, disp=0.4, t_max=0.6, yaw_rates=(0.5, 1.0)):
-    """[(kind, value(2,) or float, duration)]  kind: hold / acc / yaw."""
+def build_program(amps, disp=0.4, t_max=0.6, yaw_rates=(0.5, 1.0),
+                  g=1.5, tau=0.7, v_cmd_max=1.0, margin=0.9):
+    """[(kind, value(2,) or float, duration)]  kind: hold / acc / yaw.
+
+    The move length a T^2 is disp, but cut so that the velocity command stays below the
+    limit at the end of the acceleration (peak speed a T):  (a T + tau a)/g <= margin*v_cmd_max.
+    Without the cut the acceleration is clipped, the braking (-a for T) overshoots, and the
+    drone travels far past the plan.
+    """
     prog = []
     dirs = [np.array([1.0, 0.0]), np.array([-1.0, 0.0]),
             np.array([0.0, 1.0]), np.array([0.0, -1.0])]
     for a in amps:
         T = min(t_max, math.sqrt(disp / a))
+        T_cmd = (margin * v_cmd_max * g - tau * a) / a
+        if T_cmd <= 0:
+            continue
+        T = min(T, T_cmd)
         for d in dirs:
-            prog += [("hold", None, 1.5), ("acc", a * d, T), ("acc", -a * d, T),
+            prog += [("hold", None, 1.0), ("acc", a * d, T), ("acc", -a * d, T),
                      ("acc", np.zeros(2), 0.5)]
     for w in yaw_rates:
-        prog += [("hold", None, 1.5), ("yaw", w, 2.0), ("yaw", -w, 2.0)]
-    prog += [("hold", None, 1.5)]
+        prog += [("hold", None, 1.0), ("yaw", w, 2.0), ("yaw", -w, 2.0)]
+    prog += [("hold", None, 1.0)]
     return prog
 
 
@@ -99,7 +114,9 @@ class DIExcite(Node):
         self.dt = 1.0 / args.rate
         self.tau = np.array([args.tau_x, args.tau_y])
         self.gain = np.array([args.g_x, args.g_y])
-        self.program = build_program(args.amps, disp=args.disp)
+        self.program = build_program(args.amps, disp=args.disp, t_max=args.t_max,
+                                     g=min(args.g_x, args.g_y), tau=max(args.tau_x, args.tau_y),
+                                     v_cmd_max=args.v_cmd_max)
         self.poses = []                 # (t, x, y, z, yaw) 全フレーム
         self.nom = np.zeros(4)
         self.running = False
@@ -172,6 +189,18 @@ class DIExcite(Node):
         self.get_logger().info(f"計測終了（{why}）")
         self.save(why)
 
+    def _seg_done(self, now, x, v):
+        """加速・ヨーの区間は決めた時間で終わる。静止の区間は、最短の時間がたち、かつ
+        開始位置に戻って止まったら終わる（最長 hold_max 秒）。次の加速を静止から始めるため。"""
+        kind, _, T = self.program[self.seg]
+        el = now - self.t_seg
+        if kind != "hold":
+            return el >= T
+        if el >= self.a.hold_max:
+            return True
+        return (el >= T and np.linalg.norm(x - self.anchor) < self.a.hold_tol
+                and np.linalg.norm(v) < self.a.hold_vtol)
+
     def _tick(self):
         out = Twist()
         out.linear.z = float(self.nom[2])
@@ -191,7 +220,7 @@ class DIExcite(Node):
             return self.stop("フェンスの外")
 
         now = time.perf_counter()
-        while self.seg < len(self.program) and now - self.t_seg >= self.program[self.seg][2]:
+        while self.seg < len(self.program) and self._seg_done(now, x, v):
             self.seg += 1
             self.t_seg = now
         if self.seg >= len(self.program):
@@ -262,9 +291,13 @@ def main():
     ap.add_argument("--window", type=float, default=0.05)
     ap.add_argument("--no-zoh", dest="zoh", action="store_false",
                     help="連続時間の式 c = (v + tau u)/g を使う（比較用）")
-    ap.add_argument("--fence", type=float, default=0.45)
-    ap.add_argument("--disp", type=float, default=0.15,
-                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（1.4 m 四方のエリアの中央から始めて，模擬で最大 0.32 m）")
+    ap.add_argument("--fence", type=float, default=0.8)
+    ap.add_argument("--hold-max", type=float, default=6.0, help="静止の区間の最長 [s]")
+    ap.add_argument("--hold-tol", type=float, default=0.05, help="静止の区間を終える位置のずれ [m]")
+    ap.add_argument("--hold-vtol", type=float, default=0.05, help="静止の区間を終える速さ [m/s]")
+    ap.add_argument("--t-max", type=float, default=1.0, help="1回の加速（と減速）の時間の上限 [s]")
+    ap.add_argument("--disp", type=float, default=0.5,
+                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（中央から始めて a = 0.5 の区間で 0.7 m 前後の見込み）")
     ap.add_argument("--log-root", default=os.path.expanduser("~/research/drone/ros2_ws/log"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
