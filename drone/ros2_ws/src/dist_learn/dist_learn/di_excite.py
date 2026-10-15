@@ -34,6 +34,11 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
   c = v/g + dt u / ((1 - exp(-dt/tau)) g) に直して送る（dt が tau より十分小さければ
   c ≈ (v + (tau + dt/2) u)/g。--no-zoh で連続時間の式 c = (v + tau u)/g）。
 
+■ 外乱（風など）を測るとき：--hover 60 --label fan_on_1m のように起動すると、Enter で 60 秒その場に
+  とどまる。位置の保持も加速度 u = kp (元の位置 - x) - kd v で指令するので、記録の u と mocap から
+  d = v+ - v - dt u（2重積分器のモデルの外乱）がそのまま出る。風なし・ありを同じ手順で取って比べる。
+  動きながらの外乱を見たいときは、風を当てたまま --hover なしで流す。
+
 ■ 速度は Kalman ではなく、直近 0.05 s の mocap の生の位置（約6点）の直線の傾きで出す。
   モデルを使わないので、測りたい「指令と実際の差」に推定の側からモデルが混ざらない。
 
@@ -55,8 +60,8 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
 ■ 記録（npz）
   pose_t, pose (N,4) = [x, y, z, yaw]   mocap の全フレーム（受信時刻）
   t, seg, kind, u_body, u_world, v_est, x, yaw, cmd   20 Hz の制御ごと
-      kind: 0=静止（位置の保持・速度指令）, 1=加速度, 2=ヨー
-      u_* は kind=1 のときだけ意味がある（指令した加速度）
+      kind: 0=静止（位置の保持・速度指令）, 1=加速度, 2=ヨー, 3=ホバリング（位置の保持・加速度指令）
+      u_* は kind=1, 3 のときだけ意味がある（指令した加速度）。label（--label の値）
   segments（文字列）, params（文字列）
   解析：pose から速度を作り、kind=1 の区間で  d_k = v_{k+1} - v_k - dt u_world_k  を見る。
   速度は 120 Hz の生の位置の隣どうしの差分で作らないこと。位置のノイズ 0.3 mm が ×120 されて
@@ -124,10 +129,14 @@ class DIExcite(Node):
         self.dt = 1.0 / args.rate
         self.tau = np.array([args.tau_x, args.tau_y])
         self.gain = np.array([args.g_x, args.g_y])
-        self.program = build_program(args.amps, disp=args.disp, t_max=args.t_max,
-                                     g=min(args.g_x, args.g_y), tau=max(args.tau_x, args.tau_y),
-                                     v_cmd_max=args.v_cmd_max, cruise=args.cruise,
-                                     t_extra=args.t_extra, move_max=args.move_max)
+        if args.hover > 0:
+            # その場にとどまるだけ（風などの外乱を測る）。位置の保持も加速度で指令する
+            self.program = [("hold", None, 1.0), ("hover", None, args.hover)]
+        else:
+            self.program = build_program(args.amps, disp=args.disp, t_max=args.t_max,
+                                         g=min(args.g_x, args.g_y), tau=max(args.tau_x, args.tau_y),
+                                         v_cmd_max=args.v_cmd_max, cruise=args.cruise,
+                                         t_extra=args.t_extra, move_max=args.move_max)
         self.poses = []                 # (t, x, y, z, yaw) 全フレーム
         self.nom = np.zeros(4)
         self.running = False
@@ -170,6 +179,15 @@ class DIExcite(Node):
         else:
             v = np.zeros(2)
         return arr[-1, 1:3], arr[-1, 4], v
+
+    def _acc_to_cmd(self, vb, ub):
+        """機体座標の速度 vb と加速度 ub → 速度指令（機体座標, max_vxy 規約の m/s）。
+        指令を dt の間一定に保つと  v+ = e v + (1 - e) g c,  e = exp(-dt/tau)。
+        v+ = v + dt u にする c は  c = v/g + dt u / ((1 - e) g)。"""
+        if not self.a.zoh:
+            return (vb + self.tau * ub) / self.gain
+        e = np.exp(-self.dt / self.tau)
+        return (vb + self.dt * ub / (1.0 - e)) / self.gain
 
     def _rot(self, yaw):
         c, s = math.cos(yaw), math.sin(yaw)
@@ -247,12 +265,19 @@ class DIExcite(Node):
         elif kind == "acc":
             kcode = 1
             u_body = np.asarray(val, float)
-            # 指令を dt の間一定に保つと  v+ = e v + (1 - e) g c,  e = exp(-dt/tau)。
-            # v+ = v + dt u にする c は  c = (v + dt u/(1 - e)) / g - e v/((1 - e) g)
-            #                             = v/g + dt u / ((1 - e) g)
-            e = np.exp(-self.dt / self.tau)
             vb_now = Rb.T @ v
-            cb = (vb_now + self.dt * u_body / (1.0 - e)) / self.gain if self.a.zoh else                 (vb_now + self.tau * u_body) / self.gain
+            cb = self._acc_to_cmd(vb_now, u_body)
+            wz = self.a.kp_yaw * math.atan2(math.sin(self.yaw0 - yaw), math.cos(self.yaw0 - yaw))
+        elif kind == "hover":
+            # 位置の保持を加速度で：u = kp (anchor - x) - kd v（2重積分器のモデルどおりに
+            # u を記録するので、d = v+ - v - dt u がそのまま外乱になる）
+            kcode = 3
+            uw = self.a.kp_acc * (self.anchor - x) - self.a.kd_acc * v
+            n = np.linalg.norm(uw)
+            if n > self.a.a_hover_max:
+                uw = uw * self.a.a_hover_max / n
+            u_body = Rb.T @ uw
+            cb = self._acc_to_cmd(Rb.T @ v, u_body)
             wz = self.a.kp_yaw * math.atan2(math.sin(self.yaw0 - yaw), math.cos(self.yaw0 - yaw))
         else:
             kcode = 2
@@ -273,12 +298,13 @@ class DIExcite(Node):
         now = datetime.now()
         d = os.path.join(self.a.log_root, "di_excite", now.strftime("%Y-%m-%d"))
         os.makedirs(d, exist_ok=True)
-        path = os.path.join(d, now.strftime("%H%M%S") + ".npz")
+        tag = ("_" + self.a.label) if self.a.label else ""
+        path = os.path.join(d, now.strftime("%H%M%S") + tag + ".npz")
         with self.lock:
             P = np.array(self.poses[max(self.pose_mark - 240, 0):])
         np.savez(path, pose_t=P[:, 0], pose=P[:, 1:],
                  **{k: np.array(v) for k, v in self.rec.items()},
-                 dt=self.dt, end_reason=why,
+                 dt=self.dt, end_reason=why, label=self.a.label,
                  segments=str([(k, None if v is None else np.round(v, 3).tolist(), T)
                                for k, v, T in self.program]),
                  params=str(vars(self.a)))
@@ -314,6 +340,12 @@ def main():
     ap.add_argument("--t-max", type=float, default=1.3, help="1回の加速（と減速）の時間の上限 [s]")
     ap.add_argument("--disp", type=float, default=0.5,
                     help="1回の加速→減速で進む距離の目安 a T^2 [m]（中央から始めて 0.7 m 前後まで動く見込み）")
+    ap.add_argument("--hover", type=float, default=0.0,
+                    help="0 より大きければ、動きの代わりにその場で指定秒数ホバリングする（外乱の計測）")
+    ap.add_argument("--kp-acc", type=float, default=1.0, help="--hover の位置の保持（加速度）の P")
+    ap.add_argument("--kd-acc", type=float, default=1.5, help="--hover の位置の保持（加速度）の D")
+    ap.add_argument("--a-hover-max", type=float, default=0.9, help="--hover の加速度の上限 [m/s^2]")
+    ap.add_argument("--label", default="", help="条件の名前（ファイル名と記録に残す。例: fan_on_1m）")
     ap.add_argument("--log-root", default=os.path.expanduser("~/research/drone/ros2_ws/log"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
