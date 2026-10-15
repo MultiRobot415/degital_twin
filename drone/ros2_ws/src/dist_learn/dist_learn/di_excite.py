@@ -11,19 +11,22 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
                        /tello/pose ──────┘ 計測中は自動の指令（高さは teleop のまま）
 
 ■ 自動で流す動き（既定。--amps で加速度の大きさを変えられる）
-  加速度 a = 0.5, 1.0, 1.3 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
+  加速度 a = 0.3, 0.6, 0.9 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
       静止 → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
   静止の区間は、1 秒たち、かつ開始位置から 5 cm 以内・速さ 5 cm/s 以下に戻ったら終わる（最長 6 秒）。
   次の加速を必ず静止から始めるため（時間で打ち切ると速度が積み重なって大きく行き過ぎる）。
-  T は移動量 a T^2 が --disp（既定 0.5 m）になるよう決め、--t-max（既定 1.0 s）で頭打ち。さらに、
+  T は移動量 a T^2 が --disp（既定 0.5 m）になるよう決め、--t-max（既定 1.3 s）で頭打ち。さらに、
   加速の終わりの速度指令 (a T + tau a)/g がスティック全開（--v-cmd-max 1.0）の 9 割を超えないよう
-  T を縮める（超えると加速が切られ、減速で行き過ぎる）。既定では
-      a = 0.5: T = 1.00 s, 移動 0.50 m / a = 1.0: T = 0.59 s, 0.35 m / a = 1.3: T = 0.28 s, 0.11 m
+  T を縮める（超えると加速が切られ、減速で行き過ぎる）。既定では加速・減速の時間と移動量が
+      a = 0.3: 1.29 s, 0.50 m / a = 0.6: 0.91 s, 0.50 m / a = 0.9: 0.74 s, 0.49 m
+  Tello は速度指令に遅れ tau で追従するので、加速度 a を出すにはいまの速度より tau a 先を指令し
+  続ける必要がある。そのぶん大きい a ほど早く全開に当たり、加速を続けられない（a = 1.3 では
+  0.28 s・0.11 m しか動けなかった）。速度指令で出せる加速度は実質 1 m/s^2 前後まで。
   最後にヨー角速度 ±0.5, ±1.0（正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体で約 1 分。
   エリア（端まで約 0.9 m）の中央から始めること。中央から 0.7 m に届く程度を狙っている。
-  模擬では、遅れのない Tello（tau, g は 10/15 の値）で開始位置から最大 0.57 m、10/15 17:34 の実測に
+  模擬では、遅れのない Tello（tau, g は 10/15 の値）で開始位置から最大 0.55 m、10/15 17:34 の実測に
   当てはめた遅れのある Tello（むだ時間 0.2 s・2次遅れ・g = 0.9）で 0.26 m。どちらも指令が上限に
-  当たるステップは 0。17:34 の実機は予定の移動量の約 1.4 倍動いたので、a = 0.5 の区間で 0.7 m 前後。
+  当たるステップは 0。17:34 の実機は予定の移動量の約 1.4 倍動いたので、0.7 m 前後の見込み。
   --fence（既定 0.8 m）を超えたらその場で止まる。
   加速度は、Tello が速度指令 c に v' = (g c - v)/tau で追従し、指令は dt の間一定とみて
   c = v/g + dt u / ((1 - exp(-dt/tau)) g) に直して送る（dt が tau より十分小さければ
@@ -279,7 +282,7 @@ class DIExcite(Node):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rate", type=float, default=20.0)
-    ap.add_argument("--amps", type=float, nargs="+", default=[0.5, 1.0, 1.3])
+    ap.add_argument("--amps", type=float, nargs="+", default=[0.3, 0.6, 0.9])
     ap.add_argument("--tau-x", type=float, default=0.65)
     ap.add_argument("--tau-y", type=float, default=0.74)
     ap.add_argument("--g-x", type=float, default=1.48)
@@ -295,9 +298,9 @@ def main():
     ap.add_argument("--hold-max", type=float, default=6.0, help="静止の区間の最長 [s]")
     ap.add_argument("--hold-tol", type=float, default=0.05, help="静止の区間を終える位置のずれ [m]")
     ap.add_argument("--hold-vtol", type=float, default=0.05, help="静止の区間を終える速さ [m/s]")
-    ap.add_argument("--t-max", type=float, default=1.0, help="1回の加速（と減速）の時間の上限 [s]")
+    ap.add_argument("--t-max", type=float, default=1.3, help="1回の加速（と減速）の時間の上限 [s]")
     ap.add_argument("--disp", type=float, default=0.5,
-                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（中央から始めて a = 0.5 の区間で 0.7 m 前後の見込み）")
+                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（中央から始めて 0.7 m 前後まで動く見込み）")
     ap.add_argument("--log-root", default=os.path.expanduser("~/research/drone/ros2_ws/log"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
