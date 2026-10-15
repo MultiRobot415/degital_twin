@@ -28,6 +28,7 @@ setup(
             "replay_experiment = dist_learn.replay_experiment:main",
             "plot_replay_compare = dist_learn.plot_replay_compare:main",
             "plot_cross3 = dist_learn.plot_cross3:main",
+            "di_filter_node = dist_learn.di_filter_node:main",
         ],
     },
 )
