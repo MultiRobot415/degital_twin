@@ -12,20 +12,20 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
 
 ■ 自動で流す動き（既定。--amps で加速度の大きさを変えられる）
   加速度 a = 0.3, 0.6, 0.9 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
-      静止 → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
+      静止 → +a で加速（T 秒） → 0 で一定速度（--cruise 0.5 s） → -a で減速（T 秒） → 0（0.5 s）
   静止の区間は、1 秒たち、かつ開始位置から 5 cm 以内・速さ 5 cm/s 以下に戻ったら終わる（最長 6 秒）。
   次の加速を必ず静止から始めるため（時間で打ち切ると速度が積み重なって大きく行き過ぎる）。
-  T は移動量 a T^2 が --disp（既定 0.5 m）になるよう決め、--t-max（既定 1.3 s）で頭打ち。さらに、
+  T は移動量 a T^2 + a T * cruise が --disp（既定 0.5 m）になるよう決め、--t-max（既定 1.3 s）で頭打ち。さらに、
   加速の終わりの速度指令 (a T + tau a)/g がスティック全開（--v-cmd-max 1.0）の 9 割を超えないよう
   T を縮める（超えると加速が切られ、減速で行き過ぎる）。既定では加速・減速の時間と移動量が
-      a = 0.3: 1.29 s, 0.50 m / a = 0.6: 0.91 s, 0.50 m / a = 0.9: 0.74 s, 0.49 m
+      a = 0.3: 1.06 s, 0.50 m / a = 0.6: 0.70 s, 0.50 m / a = 0.9: 0.54 s, 0.50 m（加速・減速それぞれの時間）
   Tello は速度指令に遅れ tau で追従するので、加速度 a を出すにはいまの速度より tau a 先を指令し
   続ける必要がある。そのぶん大きい a ほど早く全開に当たり、加速を続けられない（a = 1.3 では
   0.28 s・0.11 m しか動けなかった）。速度指令で出せる加速度は実質 1 m/s^2 前後まで。
-  最後にヨー角速度 ±0.5, ±1.0（正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体で約 1 分。
+  最後にヨー角速度 ±0.5, ±1.0（正規化）を 2 秒ずつ（その間、位置はその場に保つ）。全体で約 1 分半。
   エリア（端まで約 0.9 m）の中央から始めること。中央から 0.7 m に届く程度を狙っている。
-  模擬では、遅れのない Tello（tau, g は 10/15 の値）で開始位置から最大 0.55 m、10/15 17:34 の実測に
-  当てはめた遅れのある Tello（むだ時間 0.2 s・2次遅れ・g = 0.9）で 0.26 m。どちらも指令が上限に
+  模擬では、遅れのない Tello（tau, g は 10/15 の値）で開始位置から最大 0.57 m、10/15 17:34 の実測に
+  当てはめた遅れのある Tello（むだ時間 0.2 s・2次遅れ・g = 0.9）で 0.27 m。どちらも指令が上限に
   当たるステップは 0。17:34 の実機は予定の移動量の約 1.4 倍動いたので、0.7 m 前後の見込み。
   --fence（既定 0.8 m）を超えたらその場で止まる。
   加速度は、Tello が速度指令 c に v' = (g c - v)/tau で追従し、指令は dt の間一定とみて
@@ -84,7 +84,7 @@ def yaw_from_quat(qx, qy, qz, qw) -> float:
 
 
 def build_program(amps, disp=0.4, t_max=0.6, yaw_rates=(0.5, 1.0),
-                  g=1.5, tau=0.7, v_cmd_max=1.0, margin=0.9):
+                  g=1.5, tau=0.7, v_cmd_max=1.0, margin=0.9, cruise=0.5):
     """[(kind, value(2,) or float, duration)]  kind: hold / acc / yaw.
 
     The move length a T^2 is disp, but cut so that the velocity command stays below the
@@ -96,14 +96,17 @@ def build_program(amps, disp=0.4, t_max=0.6, yaw_rates=(0.5, 1.0),
     dirs = [np.array([1.0, 0.0]), np.array([-1.0, 0.0]),
             np.array([0.0, 1.0]), np.array([0.0, -1.0])]
     for a in amps:
-        T = min(t_max, math.sqrt(disp / a))
+        # move = a T^2 (accel + brake) + a T * cruise (constant speed in between) = disp
+        T = min(t_max, (-cruise + math.sqrt(cruise ** 2 + 4.0 * disp / a)) / 2.0)
         T_cmd = (margin * v_cmd_max * g - tau * a) / a
         if T_cmd <= 0:
             continue
         T = min(T, T_cmd)
         for d in dirs:
-            prog += [("hold", None, 1.0), ("acc", a * d, T), ("acc", -a * d, T),
-                     ("acc", np.zeros(2), 0.5)]
+            prog += [("hold", None, 1.0), ("acc", a * d, T)]
+            if cruise > 0:
+                prog += [("acc", np.zeros(2), cruise)]       # 一定速度で流す（u = 0）
+            prog += [("acc", -a * d, T), ("acc", np.zeros(2), 0.5)]
     for w in yaw_rates:
         prog += [("hold", None, 1.0), ("yaw", w, 2.0), ("yaw", -w, 2.0)]
     prog += [("hold", None, 1.0)]
@@ -119,7 +122,7 @@ class DIExcite(Node):
         self.gain = np.array([args.g_x, args.g_y])
         self.program = build_program(args.amps, disp=args.disp, t_max=args.t_max,
                                      g=min(args.g_x, args.g_y), tau=max(args.tau_x, args.tau_y),
-                                     v_cmd_max=args.v_cmd_max)
+                                     v_cmd_max=args.v_cmd_max, cruise=args.cruise)
         self.poses = []                 # (t, x, y, z, yaw) 全フレーム
         self.nom = np.zeros(4)
         self.running = False
@@ -298,6 +301,8 @@ def main():
     ap.add_argument("--hold-max", type=float, default=6.0, help="静止の区間の最長 [s]")
     ap.add_argument("--hold-tol", type=float, default=0.05, help="静止の区間を終える位置のずれ [m]")
     ap.add_argument("--hold-vtol", type=float, default=0.05, help="静止の区間を終える速さ [m/s]")
+    ap.add_argument("--cruise", type=float, default=0.5,
+                    help="加速と減速のあいだに一定速度で流す時間 [s]（0 で加速→すぐ減速）")
     ap.add_argument("--t-max", type=float, default=1.3, help="1回の加速（と減速）の時間の上限 [s]")
     ap.add_argument("--disp", type=float, default=0.5,
                     help="1回の加速→減速で進む距離の目安 a T^2 [m]（中央から始めて 0.7 m 前後まで動く見込み）")
