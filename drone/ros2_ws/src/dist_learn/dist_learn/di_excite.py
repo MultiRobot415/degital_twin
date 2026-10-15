@@ -13,7 +13,8 @@ Enter を押すと、決まった順番の動き（前後・左右の加速と�
 ■ 自動で流す動き（既定。--amps で加速度の大きさを変えられる）
   加速度 a = 0.5, 1.0, 2.0 m/s^2 それぞれについて、機体座標の +x, -x, +y, -y の順に
       その場で静止（1.5 s） → +a で加速（T 秒） → -a で減速（T 秒） → 0（0.5 s）
-  T は移動量 a T^2 が 0.4 m 以下になるよう決める。最後にヨー角速度 ±0.5, ±1.0（正規化）を
+  T は移動量 a T^2 が --disp（既定 0.15 m）になるよう決める。エリア 1.4 m 四方の中央から始めること
+  （模擬では開始位置から最大 0.31 m。機体の半径 0.15 m を足しても壁まで余裕がある）。最後にヨー角速度 ±0.5, ±1.0（正規化）を
   2 秒ずつ（その間、位置はその場に保つ）。全体でおよそ 50 秒。
   加速度は、Tello が速度指令 c に v' = (g c - v)/tau で追従し、指令は dt の間一定とみて
   c = v/g + dt u / ((1 - exp(-dt/tau)) g) に直して送る（dt が tau より十分小さければ
@@ -96,7 +97,7 @@ class DIExcite(Node):
         self.dt = 1.0 / args.rate
         self.tau = np.array([args.tau_x, args.tau_y])
         self.gain = np.array([args.g_x, args.g_y])
-        self.program = build_program(args.amps)
+        self.program = build_program(args.amps, disp=args.disp)
         self.poses = []                 # (t, x, y, z, yaw) 全フレーム
         self.nom = np.zeros(4)
         self.running = False
@@ -259,7 +260,9 @@ def main():
     ap.add_argument("--window", type=float, default=0.05)
     ap.add_argument("--no-zoh", dest="zoh", action="store_false",
                     help="連続時間の式 c = (v + tau u)/g を使う（比較用）")
-    ap.add_argument("--fence", type=float, default=1.0)
+    ap.add_argument("--fence", type=float, default=0.45)
+    ap.add_argument("--disp", type=float, default=0.15,
+                    help="1回の加速→減速で進む距離の目安 a T^2 [m]（1.4 m 四方のエリアの中央から始めて，模擬で最大 0.31 m）")
     ap.add_argument("--log-root", default=os.path.expanduser("~/research/drone/ros2_ws/log"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
