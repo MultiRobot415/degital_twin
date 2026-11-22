@@ -1,0 +1,38 @@
+# 合意（コンセンサス）型・分散制御の出発点
+#
+#   基準 r を受け取るのは tello1 だけ（pinning）。全機が互いを近傍として持ち（無向の完全グラフ）、
+#   近傍との相対位置の食い違いを減らすよう動く。リーダーも仲間の位置を見て動く点が
+#   リーダー・フォロワーとの違い（仲間が遅れるとリーダーも待つ）。
+#     u_i = k_ref a_i (r + d_i − p_i) + k_nbr Σ_{j∈N_i} w_ij ((p_j − d_j) − (p_i − d_i))
+#
+#   情報グラフ:  r → tello1 ⇄ tello2
+#                     ⇅    ⇅
+#                    tello3 ─┘
+#
+# neighbors を変える（例: 輪にする・一部の辺を切る）と通信トポロジの影響を調べられる。
+# 全機が近傍をたどって pinned 機体に届かない構成は起動時にエラーになる（swarm_config.check_well_posed）。
+# 座標は ROS 規約（x=前, y=左, z=上）。
+
+description: consensus
+
+control:
+  rate_hz: 20.0
+  k_ref: {xy: 0.5, z: 0.6}
+  k_nbr: {xy: 0.3, z: 0.3}
+  k_yaw: 1.0
+  goal_yaw: 0.0
+  max_cmd: {xy: 0.5, z: 0.5, yaw: 0.5}
+
+agents:
+  tello1:
+    offset: [0.0, 0.0, 0.0]
+    pinned: true
+    neighbors: {tello2: 1.0, tello3: 1.0}
+  tello2:
+    offset: [-0.4, -0.4, 0.0]    # 後ろ 0.4m・右 0.4m
+    pinned: false
+    neighbors: {tello1: 1.0, tello3: 1.0}
+  tello3:
+    offset: [-0.4, 0.4, 0.0]     # 後ろ 0.4m・左 0.4m
+    pinned: false
+    neighbors: {tello1: 1.0, tello2: 1.0}

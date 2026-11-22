@@ -1,0 +1,37 @@
+# ドローンショー（ルールベース）: 正三角形を保ったまま中心まわりに回り、中心は楕円軌道を周回する
+#
+#   p_i*(t) = c(t) + ρ R(φ(t) + θ_i) e_x            … 各機の目標は時刻だけで決まる（機体同士の通信なし）
+#   u_i     = ṗ_i*(t) − k (p_i − p_i*)               … 目標の速度をフィードフォワードして追従
+#
+#   c(t): 中心 = commander の Leader（'e' で楕円軌道。swarm.yaml の reference.ellipse）
+#   φ(t): 隊形の回転角（'o' で回転の開始/停止。swarm.yaml の show.spin_rate）
+#
+# 実行:
+#   ros2 launch drone_control formation.launch.py formation:=drone_show
+#   commander で t（離陸）→ g（三角形を組む）→ o（回転開始）→ e（楕円周回開始）→ e, o（停止）→ h → l
+#   ※ o は g のあとに押す（先に回すと、三角形が回った位置へ向かうので経路が交差しうる）
+#
+# 座標は ROS 規約（x=前, y=左, z=上, world）。θ は回転角 0 のとき +x から反時計回り。
+
+law: drone_show
+description: triangle_spin_on_ellipse
+
+control:
+  rate_hz: 20.0
+  k: 1.0                        # 目標への追従の速さ [1/s]（誤差 ∝ e^{−kt}）
+  max_speed: {xy: 0.3, z: 0.3}  # [m/s] 楕円 ≤0.071 + 回転 ρω=0.126 → 最大 ≈0.20 m/s なので余裕あり
+  k_yaw: 1.0                    # 機首は回さず、全機 goal_yaw を向いたまま（Tello は横移動できる）
+  goal_yaw: 0.0
+  max_cmd_yaw: 0.5
+
+shape:
+  radius: 0.4                   # ρ: 中心から各機まで [m]。正三角形の一辺 = ρ√3 ≈ 0.69 m
+
+agents:
+  # 120° ずつで正三角形。swarm.yaml の初期配置（tello2 が右・tello3 が左）と同じ側に置き、経路を交差させない
+  tello1:
+    azimuth_deg: 0              # 前
+  tello2:
+    azimuth_deg: 240            # 右後ろ
+  tello3:
+    azimuth_deg: 120            # 左後ろ

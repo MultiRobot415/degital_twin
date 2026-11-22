@@ -1,0 +1,50 @@
+# 論文 第3章（1次システムのフォーメーション）の合意制御則・ネットワーク構造 NET2（図 3.3(b)）
+#
+#   u_i = (1/Σ_j a_ij) Σ_j a_ij [ −k(r̂_i − r̂_j) + ṙ_j + (ḋ_i − ḋ_j) ],  r̂ = r − d      … 式 (3.5)
+#   d_i = |d_i| R(ψ_L + θ_i) e_x   （ψ_L: Leader の進行方向）                             … 式 (3.22)
+#
+#   NET2: Leader の情報を直接得るのは 1 号機だけ。機体間はすべて双方向（仮定 3.2）。
+#
+#       Leader → tello1 ⇄ tello2 ⇄ tello3
+#
+#   定理 3.1・系 3.1: 誤差は e^{−kt} で減衰し、その速さはネットワーク構造によらない
+#   （ch3_net1.yaml と同じ速さで収束するはず = 論文 Case I と II の比較と同じ実験ができる）。
+#
+# 座標は ROS 規約（x=前, y=左, z=上, world）。θ は Leader の進行方向から反時計回り（= 左回り）。
+# 実行: ros2 launch drone_control formation.launch.py formation:=ch3_net2
+
+law: consensus_ch3
+description: ch3_net2
+
+control:
+  rate_hz: 20.0             # 制御周期（論文は 0.1 s）
+  k: 1.0                    # 収束の速さ [1/s]。誤差 ∝ e^{−kt}（時定数 1/k = 1 秒）。論文のシミュレーションは 2〜20
+  max_speed: {xy: 0.3, z: 0.3}   # 速度指令の上限 [m/s]（論文には無い。実機のための飽和）
+  k_yaw: 1.0                # ヨーは隊形と独立に、全機 goal_yaw を向く（正規化指令 / rad）
+  goal_yaw: 0.0             # [rad] 機首 +x
+  max_cmd_yaw: 0.5
+
+shape:
+  rotate_with_leader: true  # true: 隊形が Leader の進行方向に合わせて回る（論文 図 3.1(a)）
+
+agents:
+  # distance = |d_i| [m], azimuth_deg = θ_i（論文は |d|=2m、アリーナに合わせて縮小）
+  #   表 3.2 は #1=0°, #2=90°, #3=270° だが、ここでは左右を反転して tello2=270°（右）, tello3=90°（左）にした。
+  #   swarm.yaml の初期配置（tello2 が右・tello3 が左）のまま表 3.2 どおりにすると 2 機の経路が交差して衝突するため。
+  #   ネットワーク（tello1 ⇄ tello2 ⇄ tello3 の鎖）は同じで、左右対称なので論文の実験と等価。
+  # leader = a_i,N+1（Leader と直接つながるか）, neighbors = a_ij = 1 となる機体
+  tello1:
+    distance: 0.4
+    azimuth_deg: 0          # Leader の前
+    leader: true
+    neighbors: [tello2]
+  tello2:
+    distance: 0.4
+    azimuth_deg: 270        # Leader の右
+    leader: false
+    neighbors: [tello1, tello3]
+  tello3:
+    distance: 0.4
+    azimuth_deg: 90         # Leader の左
+    leader: false
+    neighbors: [tello2]

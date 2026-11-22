@@ -1,0 +1,77 @@
+# 群の機体（ハード）設定。Sim / 実機 / formation のすべてのノードがこのファイルを読む。
+#
+# ■ 座標はすべて ROS 規約（REP-103）: x = 前, y = 左, z = 上, world 座標, メートル
+#   ref/mocap_stack の値（Motive Y-up: x=前, y=上, z=右）を持ってくるときは
+#   (x, y, z)_Motive → (x, -z, y)_ROS に変換すること（drone_control/frames.py 参照）。
+#
+# 機体を足すとき（4機目など）は drones にエントリを追加し、
+# 使う formation/*.yaml の agents にも同じ名前を追加する（足りないと起動時にエラー）。
+
+world_frame: world
+
+mocap:
+  # true = Motive が Y-up で配信（この研究室の設定）→ pose_bridge が Y-up → Z-up に変換する
+  # false = Motive 側で Up Axis を Z にしている → 素通し
+  convert_y_up: true
+
+drones:
+  # name は ROS 名前空間になる（/tello1/pose, /tello1/cmd_vel ...）
+  # ip / rigid_body_id は ref/mocap_stack-main/MOCAP_for2TELLOs と同じ対応
+  - name: tello1                 # 1号機（リーダー）
+    ip: 192.168.11.50
+    rigid_body_id: 1
+    # Sim の初期位置 = ref で機体を置く場所（ref の default_target_positions の真下）
+    #   ref 1号機 (x=0.5, z=0.0)_Motive → (0.5, 0.0)_ROS
+    sim_initial_position: [0.5, 0.0, 0.0]
+    sim_initial_yaw: 0.0         # [rad] 0 = 機首 +x（Motive で剛体を作った向き）
+  - name: tello2                 # 2号機
+    ip: 192.168.11.51
+    rigid_body_id: 2
+    #   ref 2号機 (x=0.0, z=+0.4)_Motive（右）→ (0.0, -0.4)_ROS
+    sim_initial_position: [0.0, -0.4, 0.0]
+    sim_initial_yaw: 0.0
+  - name: tello3                 # 3号機
+    ip: 192.168.11.21
+    rigid_body_id: 3
+    #   ref 3号機 (x=0.0, z=-0.4)_Motive（左）→ (0.0, +0.4)_ROS
+    sim_initial_position: [0.0, 0.4, 0.0]
+    sim_initial_yaw: 0.0
+  # 4機目（ID・IP 未定）:
+  # - name: tello4
+  #   ip: 192.168.11.xx
+  #   rigid_body_id: 4
+  #   sim_initial_position: [0.0, 0.0, 0.0]
+
+vehicle:
+  # 正規化指令 1.0（rc 100）のときの速度 [m/s]。
+  #   swarm_sim はこの速度で機体を動かし、consensus_agent は m/s の指令を正規化指令に直すのに使う。
+  #   1.0 / 0.6 は Isaac Sim の tello_sim.py と同じ値。実機 Tello は ref の実機ログからの粗い推定で
+  #   xy 約 0.6〜0.8（未検証）。実機で同定したらここを更新する（Sim もその値で動くようになる）。
+  velocity_scale: {xy: 1.0, z: 0.6}
+
+reference:
+  # フォーメーション基準点 r の初期値（formation_commander が出す。z キーでここに戻る）
+  #   ref の 1号機初期目標 (0.5, 1.0, 0.0)_Motive → (0.5, 0.0, 1.0)_ROS
+  initial: [0.5, 0.0, 1.0]
+  step: 0.1                      # commander のキー1回あたりの移動量 [m]
+  hold_speed: 0.15               # キーを押しっぱなしにしたときに基準が動く速さ [m/s]（離すと止まる）
+  # commander の 'e' キーで Leader が動く楕円軌道（論文 3.4 節は 長径10m・短径8m・周期20s。アリーナに合わせて縮小）
+  #   center: 楕円の中心 (x, y)（ROS 座標）。'e' を押すと、Leader はまず楕円の開始点（今の向きのまま楕円に
+  #           接して走り出せる点）へ向きを保ったまま平行移動し、着いたら自動で周回を始める。
+  #           null にすると従来の動き（今いる点から今の進行方向に沿って走り出す = 中心は開始位置で決まる）。
+  #   中心 (0, 0)・a=0.45, b=0.35 なら Leader は x∈[-0.45, 0.45], y∈[-0.35, 0.35]。隊形の半径 0.4m
+  #   （ch3_*.yaml / drone_show.yaml）を足すと、機体は x∈[-0.85, 0.85], y∈[-0.75, 0.75]。
+  #   ※ (0, 0) は Motive の原点。フィールドの中心と原点がずれているなら、フィールド中心の座標を入れる
+  #     （check_poses.py で、フィールド中央に置いた機体の x, y を読めば分かる）。
+  #   （2026-10-01: 実機で中心が開始位置で決まり左前に寄った → 撮影範囲の端で mocap を見失ったため、中心を固定）
+  ellipse: {a: 0.45, b: 0.35, period: 40.0, center: [0.0, 0.0]}
+  heading_speed_threshold: 0.02  # Leader の速さがこれ未満なら進行方向を更新しない [m/s]
+  # ゴール指定（RViz の 2D Goal Pose / /formation/goal）で Leader が動くとき:
+  #   ① その場でゴールの方向へ turn_rate で向きを変え（隊形は形を保って回る）、② goto_speed で直進する
+  goto_speed: 0.1                # [m/s]
+  turn_rate: 0.3                 # [rad/s]（90° 回るのに約 5 秒）
+
+show:
+  # drone_show（formation:=drone_show）で commander の 'o' キーを押すと、隊形が中心まわりにこの速さで回る [rad/s]
+  #   0.314 ≈ 20 秒で 1 回転（楕円 1 周 40 秒の間に 2 回転）。正 = 反時計回り（上から見て）
+  spin_rate: 0.314

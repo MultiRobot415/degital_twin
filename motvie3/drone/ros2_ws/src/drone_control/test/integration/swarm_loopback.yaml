@@ -1,0 +1,11 @@
+# ドライバ検証用: 3 機の「偽 Tello」(fake_tello.py) をループバックアドレスに置く。
+# 実機では使わない。本番の設定は config/swarm.yaml。
+world_frame: world
+mocap:
+  convert_y_up: true
+drones:
+  - {name: tello1, ip: 127.0.0.2, rigid_body_id: 1}
+  - {name: tello2, ip: 127.0.0.3, rigid_body_id: 2}
+  - {name: tello3, ip: 127.0.0.4, rigid_body_id: 3}
+reference:
+  initial: [0.5, 0.0, 1.0]

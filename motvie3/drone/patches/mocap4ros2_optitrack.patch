@@ -1,0 +1,32 @@
+diff --git a/mocap4r2_optitrack_driver/CMakeLists.txt b/mocap4r2_optitrack_driver/CMakeLists.txt
+index bf6e77e..417e9f0 100644
+--- a/mocap4r2_optitrack_driver/CMakeLists.txt
++++ b/mocap4r2_optitrack_driver/CMakeLists.txt
+@@ -64,6 +64,11 @@ install(DIRECTORY include/${PROJECT_NAME}
+   DESTINATION include/
+ )
+ 
++# 同梱の NatNet SDK（libNatNet.so）を install/lib に入れる（追記）。
++# これが無いと実行時に "libNatNet.so: cannot open shared object file" で落ちる。
++# install/<pkg>/lib は source install/setup.bash で LD_LIBRARY_PATH に入る。
++install(FILES ${LIBNATNET_SDK_LIBRARY} DESTINATION lib)
++
+ install(DIRECTORY
+   launch
+   config
+diff --git a/mocap4r2_optitrack_driver/config/mocap4r2_optitrack_driver_params.yaml b/mocap4r2_optitrack_driver/config/mocap4r2_optitrack_driver_params.yaml
+index e9c13cb..c137f00 100644
+--- a/mocap4r2_optitrack_driver/config/mocap4r2_optitrack_driver_params.yaml
++++ b/mocap4r2_optitrack_driver/config/mocap4r2_optitrack_driver_params.yaml
+@@ -1,8 +1,8 @@
+ mocap4r2_optitrack_driver_node:
+   ros__parameters:
+-    connection_type: "Unicast" # Unicast / Multicast
+-    server_address: "198.17.0.120"
+-    local_address: "198.17.0.48"
++    connection_type: "Multicast" # Unicast / Multicast
++    server_address: "192.168.11.101"  # Motive PC（2026-10-01 接続して確認。ref のコードの .2 ではない）
++    local_address: "192.168.11.19"
+     multicast_address: "239.255.42.99"
+     server_command_port: 1510
+     server_data_port: 1511

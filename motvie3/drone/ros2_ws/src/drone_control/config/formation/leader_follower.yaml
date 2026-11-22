@@ -1,0 +1,34 @@
+# リーダー・フォロワー型
+#
+#   リーダー(tello1)だけが基準 r を受け取る。フォロワーは「リーダーの実際の位置」を見て
+#   自分の相対位置 (d_i − d_1) を保つ。フォロワーは基準を知らない（情報はリーダー経由のみ）。
+#     リーダー  : u_1 = k_ref (r + d_1 − p_1)
+#     フォロワー: u_i = k_nbr ((p_1 − d_1) − (p_i − d_i))
+#
+#   情報グラフ:  r → tello1 → tello2
+#                          └→ tello3
+#
+# 座標は ROS 規約（x=前, y=左, z=上）。
+
+description: leader_follower
+
+control:
+  rate_hz: 20.0
+  k_ref: {xy: 0.5, z: 0.6}
+  k_nbr: {xy: 0.5, z: 0.6}
+  k_yaw: 1.0
+  goal_yaw: 0.0
+  max_cmd: {xy: 0.5, z: 0.5, yaw: 0.5}
+
+agents:
+  tello1:
+    offset: [0.0, 0.0, 0.0]
+    pinned: true
+  tello2:
+    offset: [-0.4, -0.4, 0.0]    # 後ろ 0.4m・右 0.4m
+    pinned: false
+    neighbors: {tello1: 1.0}     # 近傍: 重み
+  tello3:
+    offset: [-0.4, 0.4, 0.0]     # 後ろ 0.4m・左 0.4m
+    pinned: false
+    neighbors: {tello1: 1.0}

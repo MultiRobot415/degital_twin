@@ -1,0 +1,31 @@
+# 基準追従型（= ref の Tモードと同じ構造）
+#
+#   全機が基準 r を受け取り、各自 r + d_i を追う。機体同士の情報は使わない（近傍なし）。
+#   u_i = k_ref (r + d_i − p_i)
+#
+# まず実機で動かすならこれ（ref で実績のある構造）。
+# 制御則の式・記号は drone_control/formation_law.py を参照。
+# 座標は ROS 規約（x=前, y=左, z=上）。
+
+description: reference_tracking
+
+control:
+  rate_hz: 20.0                  # 各 agent が cmd_vel を出す周期（ref の CONTROL_INTERVAL=0.05s と同じ）
+  k_ref: {xy: 0.5, z: 0.6}       # 正規化指令 / m（Sim では 1.0 = 1 m/s）
+  k_nbr: {xy: 0.0, z: 0.0}       # 近傍なし
+  k_yaw: 1.0                     # 正規化指令 / rad
+  goal_yaw: 0.0                  # [rad] 全機 機首 +x
+  max_cmd: {xy: 0.5, z: 0.5, yaw: 0.5}   # 指令の上限（0.5 = rc 50。ref の max_speed=50 と同じ）
+
+agents:
+  # offset d_i: 基準 r からの変位（ROS 座標）
+  #   ref の FORMATION_OFFSETS（Motive）を変換: (x, y, z)_M → (x, -z, y)_ROS
+  tello1:
+    offset: [0.0, 0.0, 0.0]      # リーダー = 基準点そのもの
+    pinned: true
+  tello2:
+    offset: [-0.4, -0.4, 0.0]    # ref (-0.4, 0, +0.4)_M → 後ろ 0.4m・右 0.4m
+    pinned: true
+  tello3:
+    offset: [-0.4, 0.4, 0.0]     # ref (-0.4, 0, -0.4)_M → 後ろ 0.4m・左 0.4m
+    pinned: true

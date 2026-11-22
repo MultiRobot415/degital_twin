@@ -1,0 +1,192 @@
+# 群フォーメーション用 RViz 設定（Fixed Frame = world, ROS 座標: x前 y左 z上）
+#   濃い矢印 = 各機の現在位置 /<name>/pose, 薄い矢印 = 各機が向かっている点 /<name>/formation_target,
+#   黄色 = 基準点 /formation/reference、白 = 仮想 Leader /formation/leader（向き = 進行方向）。"2D Goal Pose" で基準点の xy を指定できる。
+#   4機目以降は TF に自動で出る（Pose 表示を足したいときはこのファイルに追記）。
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Global Options:
+    Fixed Frame: world
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Cell Size: 0.5
+      Plane Cell Count: 12
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Show Names: true
+      Show Axes: true
+      Marker Scale: 0.5
+    - Class: rviz_default_plugins/Pose
+      Name: tello1 pose
+      Enabled: true
+      Topic:
+        Value: /tello1/pose
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 255; 85; 0
+      Alpha: 1.0
+      Shaft Length: 0.25
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: tello1 target
+      Enabled: true
+      Topic:
+        Value: /tello1/formation_target
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 255; 85; 0
+      Alpha: 0.4
+      Shaft Length: 0.12
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: tello2 pose
+      Enabled: true
+      Topic:
+        Value: /tello2/pose
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 0; 170; 255
+      Alpha: 1.0
+      Shaft Length: 0.25
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: tello2 target
+      Enabled: true
+      Topic:
+        Value: /tello2/formation_target
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 0; 170; 255
+      Alpha: 0.4
+      Shaft Length: 0.12
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: tello3 pose
+      Enabled: true
+      Topic:
+        Value: /tello3/pose
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 170; 0; 255
+      Alpha: 1.0
+      Shaft Length: 0.25
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: tello3 target
+      Enabled: true
+      Topic:
+        Value: /tello3/formation_target
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Shape: Arrow
+      Color: 170; 0; 255
+      Alpha: 0.4
+      Shaft Length: 0.12
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Pose
+      Name: formation reference
+      Enabled: true
+      Topic:
+        Value: /formation/reference
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Transient Local
+      Shape: Arrow
+      Color: 255; 255; 0
+      Alpha: 1.0
+      Shaft Length: 0.3
+      Shaft Radius: 0.03
+      Head Length: 0.08
+      Head Radius: 0.06
+    - Class: rviz_default_plugins/Odometry
+      Name: formation leader (論文3章の仮想Leader)
+      Enabled: true
+      Topic:
+        Value: /formation/leader
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Keep: 1
+      Shape:
+        Value: Arrow
+        Color: 255; 255; 255
+        Alpha: 1.0
+        Shaft Length: 0.3
+        Shaft Radius: 0.03
+        Head Length: 0.08
+        Head Radius: 0.06
+      Covariance:
+        Value: false
+    - Class: rviz_default_plugins/Odometry
+      Name: drone show center (向き = 隊形の回転角)
+      Enabled: true
+      Topic:
+        Value: /formation/show
+        Depth: 5
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+      Keep: 1
+      Shape:
+        Value: Arrow
+        Color: 255; 0; 255
+        Alpha: 1.0
+        Shaft Length: 0.4
+        Shaft Radius: 0.02
+        Head Length: 0.06
+        Head Radius: 0.05
+      Covariance:
+        Value: false
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Value: /goal_pose
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Current View
+      Distance: 6
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0.8
+      Pitch: 0.6
+      Yaw: 3.6
